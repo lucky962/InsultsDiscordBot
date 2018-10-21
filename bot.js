@@ -91,7 +91,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
             case 'help':
                 bot.sendMessage({
                     to: channelID,
-                    message: "Sorry, the only command rn is i!insult and i!help"
+                    message: "Sorry, the only command rn is i!insult and i!help.\nAlso, just a note, this bot will be receiving an update soon that may need a bit of testing and may not work very well for a bit, thanks for understanding. :)"
                 })
             break;
             // Just add any case commands if you want to..
