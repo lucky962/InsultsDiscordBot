@@ -61,16 +61,23 @@ insults = [ 'Do you practice being dumb or something?',
 
 @client.event
 async def on_message(message):
+    print('{0.author.mention}'.format(message))
     print(message.content)
     # we do not want the bot to reply to itself
+    # if '{0.author.mention}'.format(message) == '<@256334462697078784>':
+    #     await client.send_message(message.channel, '<@256334462697078784> ' + insults[random.randint(0,len(insults))])
     if message.author == client.user:
         return
     elif message.content.startswith('i!insult'):
         await client.send_message(message.channel, insults[random.randint(0,len(insults))])
     elif message.content.startswith('Hello <@503096810961764364>'):
         await client.send_message(message.channel, 'Hello {0.author.mention}'.format(message))
+    # elif message.content.startswith('Who sux?'):
+    #     await client.send_message(message.channel, '<@256334462697078784> sux!')
     elif message.content.startswith('i!help'):
         await client.send_message(message.channel, 'Commands:\ni!help: Displays this help page\ni!insult: Displays a randomly selected Insult.')
+    elif message.content.startswith('i!'):
+        await client.send_message(message.channel, 'Sorry I don\'t know about that command yet, to see all available commands, please type i!help!')
 
     # if message.content.startswith('!hello'):
     #     msg = 'Hello {0.author.mention}'.format(message)
