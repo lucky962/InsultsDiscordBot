@@ -38,7 +38,7 @@ var insults = [ 'Do you practice being dumb or something?',
                 'The last time I saw something like you, I flushed it.',
                 'Your mind is on vacation but your mouth is working overtime.',
                 'Why don\'t you slip into something more comfortable... like a coma.',
-                'If your gonna be two faced, honey at least make one of them pretty.',
+                'If you\'re gonna be two faced, honey at least make one of them pretty.',
                 'Keep rolling your eyes, perhaps you\'ll find a brain back there.',
                 'You are not as bad as people say, you are much, much worse.',
                 'Sadly, there is no vaccine against stupidity.',
@@ -91,7 +91,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
             case 'help':
                 bot.sendMessage({
                     to: channelID,
-                    message: "Sorry, the only command rn is i!insult and i!help"
+                    message: "Sorry, the only command rn is i!insult and i!help.\nAlso, just a note, this bot will be receiving an update soon that may need a bit of testing and may not work very well for a bit, thanks for understanding. :)"
                 })
             break;
             // Just add any case commands if you want to..
