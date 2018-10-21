@@ -66,14 +66,16 @@ async def on_message(message):
     # we do not want the bot to reply to itself
     # if '{0.author.mention}'.format(message) == '<@256334462697078784>':
     #     await client.send_message(message.channel, '<@256334462697078784> ' + insults[random.randint(0,len(insults))])
-    if message.author == client.user:
-        return
+    # if message.author == client.user:
+    #     return
     elif message.content.startswith('i!insult'):
         await client.send_message(message.channel, insults[random.randint(0,len(insults))])
     elif message.content.startswith('Hello <@503096810961764364>'):
         await client.send_message(message.channel, 'Hello {0.author.mention}'.format(message))
     # elif message.content.startswith('Who sux?'):
     #     await client.send_message(message.channel, '<@256334462697078784> sux!')
+    elif message.content.startswith('i!loop'):
+        client.send_message(message.channel, 'i!loop')
     elif message.content.startswith('i!help'):
         await client.send_message(message.channel, 'Commands:\ni!help: Displays this help page\ni!insult: Displays a randomly selected Insult.')
     elif message.content.startswith('i!'):
