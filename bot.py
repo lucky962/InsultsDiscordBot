@@ -74,7 +74,7 @@ async def on_message(message):
     elif message.content.startswith('Hello <@503096810961764364>'):
         await client.send_message(message.channel, 'Hello {0.author.mention}'.format(message))
     elif message.content.startswith('i!loop'):
-        await client.send_message(message.channel, 'i!loop')
+        await client.send_message(message.channel, 'i!loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
     # elif message.content.startswith('Who sux?'):
     #     await client.send_message(message.channel, '<@256334462697078784> sux!')
     # elif message.content.startswith('i!loop'):
