@@ -76,17 +76,26 @@ async def on_message(message):
     if sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2):
         await client.send_message(message.channel, 'No need to shout...')
     if message.content.startswith('i!insult'):
+        global insults
         await client.send_message(message.channel, insults[random.randint(0,len(insults))])
     elif message.content.startswith('Hello <@503096810961764364>'):
         await client.send_message(message.channel, 'Hello {0.author.mention}'.format(message))
     elif message.content.startswith('i!loop'):
         await client.send_message(message.channel, 'i!loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
+    elif message.content.startswith('i!suggestion'):
+        file = open("insults.txt","a")
+        file.write(message.content[13:] + '\n')
+        file.close()
+        with open('insults.txt') as f:
+            insults = f.readlines()
+        insults = [x.strip() for x in insults]
+        await client.send_message(message.channel, 'Thank you for the insult suggestion, it has been added to the list of insults!')
     # elif message.content.startswith('Who sux?'):
     #     await client.send_message(message.channel, '<@256334462697078784> sux!')
     # elif message.content.startswith('i!loop'):
     #     client.send_message(message.channel, 'i!loop')
     elif message.content.startswith('i!help'):
-        await client.send_message(message.channel, 'Commands:\ni!help: Displays this help page\ni!insult: Displays a randomly selected Insult.')
+        await client.send_message(message.channel, 'Commands:\ni!help: Displays this help page\ni!insult: Displays a randomly selected Insult.\ni!suggestion <suggestion> This adds an insult to the list of insults')
     elif message.content.startswith('p!'):
         await client.send_message(message.channel, 'The new prefix for pokecord is \'P\'')
     elif message.content.startswith('i!'):
