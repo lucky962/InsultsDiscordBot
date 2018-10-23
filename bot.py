@@ -90,10 +90,6 @@ async def on_message(message):
             insults = f.readlines()
         insults = [x.strip() for x in insults]
         await client.send_message(message.channel, 'Thank you for the insult suggestion, it has been added to the list of insults!')
-    # elif message.content.startswith('Who sux?'):
-    #     await client.send_message(message.channel, '<@256334462697078784> sux!')
-    # elif message.content.startswith('i!loop'):
-    #     client.send_message(message.channel, 'i!loop')
     elif message.content.startswith('i!help'):
         await client.send_message(message.channel, 'Commands:\ni!help: Displays this help page\ni!insult: Displays a randomly selected Insult.\ni!suggestion <suggestion> This adds an insult to the list of insults')
     elif message.content.startswith('p!'):
