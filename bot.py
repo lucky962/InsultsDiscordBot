@@ -91,7 +91,7 @@ async def on_message(message):
         insults = [x.strip() for x in insults]
         await client.send_message(message.channel, 'Thank you for the insult suggestion, it has been added to the list of insults!')
     elif message.content.startswith('i!help'):
-        await client.send_message(message.channel, 'Commands:\ni!help: Displays this help page\ni!insult: Displays a randomly selected Insult.\ni!suggestion <suggestion> This adds an insult to the list of insults')
+        await client.send_message(message.channel, 'Commands:\ni!help: Displays this help page\ni!insult: Displays a randomly selected Insult.\ni!suggestion <suggestion> This adds an insult to the list of insults that this bot chooses from.')
     elif message.content.startswith('p!'):
         await client.send_message(message.channel, 'The new prefix for pokecord is \'P\'')
     elif message.content.startswith('i!'):
