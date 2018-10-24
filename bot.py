@@ -73,8 +73,8 @@ async def on_message(message):
 
     if message.author == client.user:
         return
-    if sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2):
-        await client.send_message(message.channel, 'No need to shout...')
+    # if (sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2)) and (len(message.content) > 1):
+    #     await client.send_message(message.channel, 'No need to shout...')
     if message.content.startswith('i!insult'):
         global insults
         await client.send_message(message.channel, insults[random.randint(0,len(insults))])
@@ -90,12 +90,8 @@ async def on_message(message):
             insults = f.readlines()
         insults = [x.strip() for x in insults]
         await client.send_message(message.channel, 'Thank you for the insult suggestion, it has been added to the list of insults!')
-    # elif message.content.startswith('Who sux?'):
-    #     await client.send_message(message.channel, '<@256334462697078784> sux!')
-    # elif message.content.startswith('i!loop'):
-    #     client.send_message(message.channel, 'i!loop')
     elif message.content.startswith('i!help'):
-        await client.send_message(message.channel, 'Commands:\ni!help: Displays this help page\ni!insult: Displays a randomly selected Insult.\ni!suggestion <suggestion> This adds an insult to the list of insults')
+        await client.send_message(message.channel, 'Commands:\ni!help: Displays this help page\ni!insult: Displays a randomly selected Insult.\ni!suggestion <suggestion> This adds an insult to the list of insults that this bot chooses from.')
     elif message.content.startswith('p!'):
         await client.send_message(message.channel, 'The new prefix for pokecord is \'P\'')
     elif message.content.startswith('i!'):
@@ -107,6 +103,7 @@ async def on_message(message):
 
 @client.event
 async def on_ready():
+    await client.change_presence(game=discord.Game(name='Type i!help for help!'))
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
