@@ -67,6 +67,7 @@ insults = [x.strip() for x in insults]
 async def on_message(message):
     print('{0.author.mention}'.format(message))
     print(message.content)
+    print(message)
     # we do not want the bot to reply to itself
     # if '{0.author.mention}'.format(message) == '<@256334462697078784>':
     #     await client.send_message(message.channel, '<@256334462697078784> ' + insults[random.randint(0,len(insults))])
@@ -91,11 +92,17 @@ async def on_message(message):
         insults = [x.strip() for x in insults]
         await client.send_message(message.channel, 'Thank you for the insult suggestion, it has been added to the list of insults!')
     elif message.content.startswith('i!help'):
-        await client.send_message(message.channel, 'Commands:\ni!help: Displays this help page\ni!insult: Displays a randomly selected Insult.\ni!suggestion <suggestion> This adds an insult to the list of insults that this bot chooses from.')
+        await client.send_message(message.channel, 'Commands:\ni!help: Displays this help page\ni!insult: Displays a randomly selected Insult.\ni!suggestion <suggestion>: This adds an insult to the list of insults that this bot chooses from.\ni!updatelog: This shows the improvements from the last update and upcoming updates. \n**Testing Commands Only USE AT YOUR OWN RISK** (although most don\'t work.)\n<@503096810961764364>, please leave: This nicely asks the bot to leave the server.\n')
+    elif message.content.startswith('i!updatelog'):
+        await client.send_message(message.channel, 'Current update: \nRemoved \'No need to shout\' function\nUpcoming update: \nAdding @bot please leave function\nAdding bot\'s reactions to bot\'s insults\nAdding stop function to i!loop function.')
     elif message.content.startswith('p!'):
         await client.send_message(message.channel, 'The new prefix for pokecord is \'P\'')
     elif message.content.startswith('i!'):
         await client.send_message(message.channel, 'Sorry I don\'t know about that command yet, to see all available commands, please type i!help!')
+    elif message.content.startswith('<@503096810961764364>, please leave') or message.content.startswith('Test'):
+        # await client.send_message(message.channel, 'I am sorry to have failed you, I will now leave.')
+        # await client.leave_server(client.get_server(id))
+        print(client.get_guild(id))
 
     # if message.content.startswith('!hello'):
     #     msg = 'Hello {0.author.mention}'.format(message)
@@ -103,6 +110,7 @@ async def on_message(message):
 
 @client.event
 async def on_ready():
+    await client.change_presence(game=discord.Game(name='Type i!help for help!'))
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
