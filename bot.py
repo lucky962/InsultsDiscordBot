@@ -73,8 +73,8 @@ async def on_message(message):
 
     if message.author == client.user:
         return
-    if (sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2)) and (len(message.content) > 1):
-        await client.send_message(message.channel, 'No need to shout...')
+    # if (sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2)) and (len(message.content) > 1):
+    #     await client.send_message(message.channel, 'No need to shout...')
     if message.content.startswith('i!insult'):
         global insults
         await client.send_message(message.channel, insults[random.randint(0,len(insults))])
