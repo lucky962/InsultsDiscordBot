@@ -2,7 +2,8 @@
 import discord
 import random
 
-TOKEN = 'NTAzMDk2ODEwOTYxNzY0MzY0.Dq7sxQ.-YBSGfKLjxE6CrA8t5GhLys_fMk'
+with open('BotToken.txt') as f:
+    TOKEN = f.read()
 
 client = discord.Client()
 
