@@ -1,15 +1,23 @@
 # Work with Python 3.6
 import discord
 import random
+import json
 
 with open('BotToken.txt') as f:
     TOKEN = f.read()
 
 client = discord.Client()
+commands = {}
 
 with open('insults.txt') as f:
     insults = f.readlines()
 insults = [x.strip() for x in insults]
+
+with open('OtherVars.txt') as fh:
+    for line in fh:
+        command, description = line.strip().split(' ', 1)
+        commands[command] = description.strip()
+        OtherVars = json.dumps(commands, indent=2, sort_keys=True)
 
 # insults = [ 'Do you practice being dumb or something?',
 #             'Your family tree must be a cactus because everybody on it is a prick.',
@@ -82,9 +90,27 @@ async def on_message(message):
         await client.send_message(message.channel, insults[random.randint(0,len(insults))])
     elif message.content.startswith('Hello <@503096810961764364>'):
         await client.send_message(message.channel, 'Hello {0.author.mention}'.format(message))
-    elif message.content.startswith('I\'m'):
+    elif message.content.startswith('<@503096810961764364>, start the dad jokes'):
+        file = open("OtherVars.txt","w")
+        file.write('DADJOKE                                                           False')
+        file.close()
+        with open('OtherVars.txt') as fh:
+            for line in fh:
+                command, description = line.strip().split(' ', 1)
+                commands[command] = description.strip()
+                OtherVars = json.dumps(commands, indent=2, sort_keys=True)
+    elif message.content.startswith('<@503096810961764364>, stop with the dad jokes'):
+        file = open("OtherVars.txt","w")
+        file.write('DADJOKE                                                            True')
+        file.close()
+        with open('OtherVars.txt') as fh:
+            for line in fh:
+                command, description = line.strip().split(' ', 1)
+                commands[command] = description.strip()
+                OtherVars = json.dumps(commands, indent=2, sort_keys=True)
+    elif message.content.startswith('I\'m') and OtherVars['DADJOKE'] == True:
         await client.send_message(message.channel, 'Hello ' + message.content[4:] + ', I\'m Insults Bot!')
-    elif message.content.startswith('Im') or message.content.startswith('im'):
+    elif (message.content.startswith('Im') or message.content.startswith('im')) and OtherVars['DADJOKE'] == True:
         await client.send_message(message.channel, 'Hello ' + message.content[3:] + ', I\'m Insults Bot!')
     elif message.content.startswith('i!loop'):
         await client.send_message(message.channel, 'i!loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
