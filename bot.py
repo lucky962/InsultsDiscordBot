@@ -83,9 +83,9 @@ async def on_message(message):
     elif message.content.startswith('Hello <@503096810961764364>'):
         await client.send_message(message.channel, 'Hello {0.author.mention}'.format(message))
     elif message.content.startswith('I\'m'):
-        await client.send_message(message.channel, 'Hello ' + message.content[4:] + ' I\'m Insults Bot!')
+        await client.send_message(message.channel, 'Hello ' + message.content[4:] + ', I\'m Insults Bot!')
     elif message.content.startswith('Im') or message.content.startswith('im'):
-        await client.send_message(message.channel, 'Hello ' + message.content[3:] + ' I\'m Insults Bot!')
+        await client.send_message(message.channel, 'Hello ' + message.content[3:] + ', I\'m Insults Bot!')
     elif message.content.startswith('i!loop'):
         await client.send_message(message.channel, 'i!loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
     elif message.content.startswith('i!suggestion'):
