@@ -109,9 +109,9 @@ async def on_message(message):
                 command, description = line.strip().split(' ', 1)
                 commands[command] = description.strip()
                 OtherVars = json.dumps(commands, indent=2, sort_keys=True)
-    elif message.content.startswith('I\'m') and OtherVars['DADJOKE'] == True:
+    elif message.content.startswith('I\'m') and OtherVars['DADJOKE'] == 'True':
         await client.send_message(message.channel, 'Hello ' + message.content[4:] + ', I\'m Insults Bot!')
-    elif (message.content.startswith('Im') or message.content.startswith('im')) and OtherVars['DADJOKE'] == True:
+    elif (message.content.startswith('Im') or message.content.startswith('im')) and OtherVars['DADJOKE'] == 'True':
         await client.send_message(message.channel, 'Hello ' + message.content[3:] + ', I\'m Insults Bot!')
     elif message.content.startswith('i!loop'):
         await client.send_message(message.channel, 'i!loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
