@@ -19,11 +19,6 @@ with open('OtherVars.txt', 'r') as document:
         line = line.split()
         OtherVars[line[0]] = line[1]
 
-f = open('commands.txt', 'r')
-file_contents = f.read()
-CMDS = file_contents
-f.close()
-
 @client.event
 async def on_message(message):
     global OtherVars
@@ -65,6 +60,8 @@ async def on_message(message):
                 OtherVars[line[0]] = line[1]
         await client.send_message(message.channel, 'Fine...')
         print(OtherVars['DADJOKE'])
+    elif message.content.startswith('I am ') and OtherVars['DADJOKE'] == 'True':
+        await client.send_message(message.channel, 'Hello ' + message.content[5:] + ', I\'m Insults Bot!')
     elif (message.content.startswith('I\'m ') or message.content.startswith('I\'M ')) and OtherVars['DADJOKE'] == 'True':
         await client.send_message(message.channel, 'Hello ' + message.content[4:] + ', I\'m Insults Bot!')
     elif (message.content.startswith('Im ') or message.content.startswith('im ') or message.content.startswith('IM ')) and OtherVars['DADJOKE'] == 'True':
