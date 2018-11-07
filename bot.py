@@ -74,6 +74,7 @@ with open('OtherVars.txt') as fh:
 
 @client.event
 async def on_message(message):
+    global OtherVars
     print('{0.author.mention}'.format(message))
     print(message.content)
     print(message)
