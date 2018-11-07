@@ -62,17 +62,17 @@ async def on_message(message):
         print(OtherVars['DADJOKE'])
     elif message.content.startswith('I am ') and OtherVars['DADJOKE'] == 'True':
         if 'insult' in message.content:
-            await client.send_message(message.channel, 'Hello ' + message.content[5:] + ', I\'m... wait... That\'s me!!!)
+            await client.send_message(message.channel, 'Hello ' + message.content[5:] + ', I\'m... wait... That\'s me!!!')
         else:
             await client.send_message(message.channel, 'Hello ' + message.content[5:] + ', I\'m Insults Bot!')
     elif (message.content.startswith('I\'m ') or message.content.startswith('I\'M ')) and OtherVars['DADJOKE'] == 'True':
         if 'insult' in message.content:
-            await client.send_message(message.channel, 'Hello ' + message.content[4:] + ', I\'m... wait... That\'s me!!!)
+            await client.send_message(message.channel, 'Hello ' + message.content[4:] + ', I\'m... wait... That\'s me!!!')
         else:
             await client.send_message(message.channel, 'Hello ' + message.content[4:] + ', I\'m Insults Bot!')
     elif (message.content.startswith('Im ') or message.content.startswith('im ') or message.content.startswith('IM ')) and OtherVars['DADJOKE'] == 'True':
         if 'insult' in message.content:
-            await client.send_message(message.channel, 'Hello ' + message.content[3:] + ', I\'m... wait... That\'s me!!!)
+            await client.send_message(message.channel, 'Hello ' + message.content[3:] + ', I\'m... wait... That\'s me!!!')
         else:
             await client.send_message(message.channel, 'Hello ' + message.content[3:] + ', I\'m Insults Bot!')
     elif message.content.startswith('i!loop'):
