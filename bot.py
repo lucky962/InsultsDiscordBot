@@ -2,6 +2,7 @@
 import discord
 import random
 import json
+import re
 
 with open('BotToken.txt') as f:
     TOKEN = f.read()
@@ -60,21 +61,30 @@ async def on_message(message):
                 OtherVars[line[0]] = line[1]
         await client.send_message(message.channel, 'Fine...')
         print(OtherVars['DADJOKE'])
-    elif message.content.startswith('I am ') and OtherVars['DADJOKE'] == 'True':
+    elif 'i am' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
         if 'insult' in message.content.lower():
             await client.send_message(message.channel, 'Hello ' + message.content[5:] + ', I\'m... wait... That\'s me!!!')
         else:
-            await client.send_message(message.channel, 'Hello ' + message.content[5:] + ', I\'m Insults Bot!')
-    elif (message.content.startswith('I\'m ') or message.content.startswith('I\'M ')) and OtherVars['DADJOKE'] == 'True':
+            dadname = re.split("I am ", message.content, flags=re.IGNORECASE)
+            print(dadname[1])
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
+            # await client.send_message(message.channel, 'Hello ' + message.content[5:] + ', I\'m Insults Bot!')
+    elif 'i\'m' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
         if 'insult' in message.content.lower():
             await client.send_message(message.channel, 'Hello ' + message.content[4:] + ', I\'m... wait... That\'s me!!!')
         else:
-            await client.send_message(message.channel, 'Hello ' + message.content[4:] + ', I\'m Insults Bot!')
-    elif (message.content.startswith('Im ') or message.content.startswith('im ') or message.content.startswith('IM ')) and OtherVars['DADJOKE'] == 'True':
+            dadname = re.split("I\'m ", message.content, flags=re.IGNORECASE)
+            print(dadname[1])
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
+            # await client.send_message(message.channel, 'Hello ' + message.content[4:] + ', I\'m Insults Bot!')
+    elif 'im' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
         if 'insult' in message.content.lower():
             await client.send_message(message.channel, 'Hello ' + message.content[3:] + ', I\'m... wait... That\'s me!!!')
         else:
-            await client.send_message(message.channel, 'Hello ' + message.content[3:] + ', I\'m Insults Bot!')
+            dadname = re.split("Im ", message.content, flags=re.IGNORECASE)
+            print(dadname[1])
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
+            # await client.send_message(message.channel, 'Hello ' + message.content[3:] + ', I\'m Insults Bot!')
     elif message.content.startswith('i!loop'):
         await client.send_message(message.channel, 'i!loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
     elif message.content.startswith('i!suggestion'):
@@ -127,7 +137,7 @@ async def on_message(message):
         )   
         await client.send_message(message.channel, embed=HelpMsg)
     elif message.content.startswith('i!updatelog'):
-        await client.send_message(message.channel, '**Current update:** \nAdded a Dad Joke replying to one saying I\'m... \nAdded DadJoke Enabler/Disabler \n Made Help Menu look a looot better \n**Things being worked on:** \nMaking update log look better. \nAdding @bot please leave function\nAdding bot\'s reactions to it\'s own insults\nAdding stop function to i!loop function.')
+        await client.send_message(message.channel, '***Update Log***\n**Current update:** \nAdded a Dad Joke replying to one saying I\'m... \nFixed not responding if \"Im\" is in the middle of the sentence. \nAdded DadJoke Enabler/Disabler \nMade Help Menu look a looot better \n**Things being worked on:** \nAdding @bot please leave function\nAdding bot\'s reactions to it\'s own insults\nAdding stop function to i!loop function.')
     elif message.content.startswith('p!'):
         await client.send_message(message.channel, 'The new prefix for pokecord is \'p\'')
     elif message.content.startswith('i!'):
