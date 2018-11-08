@@ -1,87 +1,130 @@
 # Work with Python 3.6
 import discord
 import random
+import json
+import re
 
-TOKEN = 'NTAzMDk2ODEwOTYxNzY0MzY0.Dq7sxQ.-YBSGfKLjxE6CrA8t5GhLys_fMk'
-
-client = discord.Client()
+with open('BotToken.txt') as f:
+    TOKEN = f.read()
 
 with open('insults.txt') as f:
     insults = f.readlines()
 insults = [x.strip() for x in insults]
 
-# insults = [ 'Do you practice being dumb or something?',
-#             'Your family tree must be a cactus because everybody on it is a prick.',
-#             'No I\'m not insulting you, I\'m describing you.',
-#             'It\'s better to let someone think you are an Idiot than to open your mouth and prove it.',
-#             'If I had a face like yours, I\'d sue my parents.',
-#             'Your birth certificate is an apology letter from the condom factory.',
-#             'I guess you prove that even god makes mistakes sometimes.',
-#             'If I wanted to kill myself I\'d climb your ego and jump to your IQ.',
-#             'You must have been born on a highway because that\'s where most accidents happen.',
-#             'I don\'t know what makes you so stupid, but it really works.',
-#             'Roses are red violets are blue, God made me pretty, what happened to you?',
-#             'Calling you an idiot would be an insult to all the stupid people.',
-#             'Some babies were dropped on their heads but you were clearly thrown at a wall.',
-#             'I\'d slap you, but that would be animal abuse.',
-#             'Please shut your mouth when you\'re talking to me.',
-#             'Why don\'t you go play in traffic.',
-#             'Stop trying to be a smart ass, you\'re just an ass.',
-#             'The last time I saw something like you, I flushed it.',
-#             'Your mind is on vacation but your mouth is working overtime.',
-#             'Why don\'t you slip into something more comfortable... like a coma.',
-#             'If you\'re gonna be two faced, honey at least make one of them pretty.',
-#             'Keep rolling your eyes, perhaps you\'ll find a brain back there.',
-#             'You are not as bad as people say, you are much, much worse.',
-#             'Sadly, there is no vaccine against stupidity.',
-#             'You\'re the reason the gene pool needs a lifeguard.',
-#             'How old are you? - Wait I shouldn\'t ask, you can\'t count that high.',
-#             'Have you been shopping lately? They\'re selling lives, you should go get one.',
-#             'You\'re like Monday mornings, nobody likes you.',
-#             'Of course I talk like an idiot, how else would you understand me?',
-#             'All day I thought of you... I was at the zoo.',
-#             'You\'re so fat, you could sell shade.',
-#             'I\'d like to see things from your point of view but I can\'t seem to get my head that far up my ass.',
-#             'Don\'t you need a license to be that ugly?',
-#             'If you really spoke your mind, you\'d be speechless.',
-#             'Stupidity is not a crime so you are free to go.',
-#             'If I told you that I have a piece of dirt in my eye, would you move?',
-#             'You so dumb, you think Cheerios are doughnut seeds.',
-#             'So, a thought crossed your mind? Must have been a long and lonely journey.',
-#             'You are so old, your birth-certificate expired.',
-#             'Every time I\'m next to you, I get a fierce desire to be alone.',
-#             'You\'re so dumb that you got hit by a parked car.',
-#             'Keep talking, someday you\'ll say something intelligent!',
-#             'You\'re so fat, you leave footprints in concrete.',
-#             'How did you get here? Did someone leave your cage open?',
-#             'Pardon me, but you\'ve obviously mistaken me for someone who gives a damn.',
-#             'Wipe your mouth, there\'s still a tiny bit of bullshit around your lips.',
-#             'Don\'t you have a terribly empty feeling - in your skull?',
-#             'As an outsider, what do you think of the human race?',
-#             'Just because you have one doesn\'t mean you have to act like one.',
-#             'We can always tell when you are lying. Your lips move.',
-#             'Are you always this stupid or is today a special occasion?'
-# ]
+with open('OtherVars.txt', 'r') as document:
+    OtherVars = {}
+    for line in document:
+        line = line.split()
+        OtherVars[line[0]] = line[1]
+
+client = discord.Client()
 
 @client.event
 async def on_message(message):
+    global insults
+    global OtherVars
     print('{0.author.mention}'.format(message))
     print(message.content)
-    # we do not want the bot to reply to itself
+
+    # IDEAS FOR NEW FUNCTIONS
     # if '{0.author.mention}'.format(message) == '<@256334462697078784>':
     #     await client.send_message(message.channel, '<@256334462697078784> ' + insults[random.randint(0,len(insults))])
-
-    if message.author == client.user:
-        return
     # if (sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2)) and (len(message.content) > 1):
     #     await client.send_message(message.channel, 'No need to shout...')
-    if message.content.startswith('i!insult'):
-        global insults
-        await client.send_message(message.channel, insults[random.randint(0,len(insults))])
+    
+    if message.content.startswith('i!disloop'):
+        with open('OtherVars.txt', 'r') as document:
+            data = document.readlines()
+        data[0] = 'Loop False\n'
+        with open('OtherVars.txt', 'w') as document:
+            document.writelines(data)
+        with open('OtherVars.txt', 'r') as document:
+            OtherVars = {}
+            for line in document:
+                line = line.split()
+                OtherVars[line[0]] = line[1]
+        await client.send_message(message.channel, 'Loop Disabled')
+    elif message.content.startswith('i!enaloop'):
+        with open('OtherVars.txt', 'r') as document:
+            data = document.readlines()
+        data[0] = 'Loop True\n'
+        with open('OtherVars.txt', 'w') as document:
+            document.writelines(data)
+        with open('OtherVars.txt', 'r') as document:
+            OtherVars = {}
+            for line in document:
+                line = line.split()
+                OtherVars[line[0]] = line[1]
+        await client.send_message(message.channel, 'Loop Enabled')
+    elif message.content.startswith('i!loop') and OtherVars['Loop'] == 'True':
+        await client.send_message(message.channel, 'i!loop')
+        # await client.send_message(message.channel, 'i!loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
+    elif message.content.startswith('i!loop') and OtherVars['Loop'] == 'False':
+        await client.send_message(message.channel, 'The i!loop function has been disabled, to re-enable it, please type i!enaloop.')
+    elif (message.content in insults) or ('I\'m Insults Bot' in message.content):
+        await client.add_reaction(message, '😂')
+    elif message.author == client.user:
+        return
+    elif message.content.startswith('i!insult'):
+        if len(message.content) > 9:
+            try:
+                await client.send_message(message.channel, insults[int(message.content[9:]) - 1])
+            except IndexError:
+                await client.send_message(message.channel, 'Sorry, I don\'t have that many/few insults, I only have ' + str(len(insults)) + ' insults, but here\'s another random insult.')
+                await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
+            except:
+                await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
+        else:
+            await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
     elif message.content.startswith('Hello <@503096810961764364>'):
         await client.send_message(message.channel, 'Hello {0.author.mention}'.format(message))
-    elif message.content.startswith('i!loop'):
-        await client.send_message(message.channel, 'i!loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
+    elif message.content.startswith('<@503096810961764364>, start the dad jokes'):
+        with open('OtherVars.txt', "r") as document:
+            data = document.readlines()
+        data[1] = "DADJOKE True"
+        with open('OtherVars.txt', "w") as document:
+            document.writelines(data)
+        with open('OtherVars.txt', 'r') as document:
+            OtherVars = {}
+            for line in document:
+                line = line.split()
+                OtherVars[line[0]] = line[1]
+        await client.send_message(message.channel, 'Sure!')
+        print(OtherVars['DADJOKE'])
+    elif message.content.startswith('<@503096810961764364>, stop with the dad jokes'):
+        with open('OtherVars.txt', "r") as document:
+            data = document.readlines()
+        data[1] = "DADJOKE False"
+        with open('OtherVars.txt', "w") as document:
+            document.writelines(data)
+        with open('OtherVars.txt', 'r') as document:
+            OtherVars = {}
+            for line in document:
+                line = line.split()
+                OtherVars[line[0]] = line[1]
+        await client.send_message(message.channel, 'Fine...')
+        print(OtherVars['DADJOKE'])
+    elif 'i am' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
+        if 'insult' in message.content.lower():
+            dadname = re.split("I am ", message.content, flags=re.IGNORECASE)
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
+        else:
+            dadname = re.split("I am ", message.content, flags=re.IGNORECASE)
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
+    elif 'i\'m' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
+        if 'insult' in message.content.lower():
+            dadname = re.split("I\'m ", message.content, flags=re.IGNORECASE)
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
+        else:
+            dadname = re.split("I\'m ", message.content, flags=re.IGNORECASE)
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
+    elif 'im' in message.content.lower() and 'him' not in message.content.lower() and OtherVars['DADJOKE'] == 'True':
+        if 'insult' in message.content.lower():
+            dadname = re.split("Im ", message.content, flags=re.IGNORECASE)
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
+        else:
+            dadname = re.split("Im ", message.content, flags=re.IGNORECASE)
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
     elif message.content.startswith('i!suggestion'):
         file = open("insults.txt","a")
         file.write(message.content[13:] + '\n')
@@ -91,21 +134,70 @@ async def on_message(message):
         insults = [x.strip() for x in insults]
         await client.send_message(message.channel, 'Thank you for the insult suggestion, it has been added to the list of insults!')
     elif message.content.startswith('i!help'):
-        await client.send_message(message.channel, 'Commands:\ni!help: Displays this help page\ni!insult: Displays a randomly selected Insult.\ni!suggestion <suggestion> This adds an insult to the list of insults that this bot chooses from.')
+        HelpMsg = discord.Embed(
+            title="Help Page",
+            description="This is a page full of commands you can use with Insults Bot",
+            color=3447003
+        )
+        HelpMsg.set_author(
+            name='Insults Bot', 
+            icon_url=client.user.avatar_url
+            )
+        HelpMsg.add_field(
+            name="i!help",
+            value="Displays this help page."
+        )
+        HelpMsg.add_field(
+            name="i!insult <number(optional)>",
+            value="Displays a randomly selected Insult. If a number is present, show the insult at that position."
+        )
+        HelpMsg.add_field(
+            name="i!suggestion <suggestion>",
+            value="This adds an insult to the list of insults that this bot chooses from."
+        )
+        HelpMsg.add_field(
+            name="i!updatelog",
+            value="This shows the improvements from the last update and upcoming updates."
+        )
+        HelpMsg.add_field(
+            name="@Insults, stop with the dad jokes",
+            value="This stops insults bot from making any more dad jokes or until reenabled"
+        )
+        HelpMsg.add_field(
+            name="@Insults, start the dad jokes",
+            value="This allows insults bot to make dad jokes"
+        )
+        HelpMsg.add_field(
+            name="@Insults, please leave",
+            value="This will force the bot to leave the server, please don\'t do this."
+        )
+        HelpMsg.add_field(
+            name="i!loop",
+            value=("This makes the bot say i!loop on repeat. Type i!disloop to disable loop and i!enaloop to enable loop. Loop is currently ") + ('enabled.' if OtherVars['Loop'] == 'True' else 'disabled.')
+        )
+        HelpMsg.timestamp
+            #timestamp=new Date(),
+        HelpMsg.set_footer(
+            icon_url=client.user.avatar_url,
+            text="© 2018 Lucky's Creations"
+        )   
+        await client.send_message(message.channel, embed=HelpMsg)
+    elif message.content.startswith('i!updatelog'):
+        await client.send_message(message.channel, '***Update Log***\n**Current update:** \nAdded a Dad Joke replying to one saying I\'m... \nFixed not responding if \"Im\" is in the middle of the sentence. \nAdded DadJoke Enabler/Disabler \nMade Help Menu look a looot better \nAdded stop function to i!loop function.\nAdded @bot please leave function\nAdded bot\'s reactions to it\'s own insults\n**Things being worked on:**\nNothing at the moment... If you have any suggestions, please let me (lucky962) know!')
     elif message.content.startswith('p!'):
-        await client.send_message(message.channel, 'The new prefix for pokecord is \'P\'')
+        await client.send_message(message.channel, 'The new prefix for pokecord is \'p\'')
     elif message.content.startswith('i!'):
         await client.send_message(message.channel, 'Sorry I don\'t know about that command yet, to see all available commands, please type i!help!')
-
-    # if message.content.startswith('!hello'):
-    #     msg = 'Hello {0.author.mention}'.format(message)
-    #     await client.send_message(message.channel, msg)
+    elif message.content.startswith('<@503096810961764364>, please leave'):
+        await client.send_message(message.channel, 'I am sorry to have failed you, I will now leave.')
+        await client.leave_server(client.get_server('502781179368439808'))
+        # print(client.get_guild(id))
 
 @client.event
 async def on_ready():
+    await client.change_presence(game=discord.Game(name='Type i!help for help!'))
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
     print('------')
-
 client.run(TOKEN)
