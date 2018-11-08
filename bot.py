@@ -61,7 +61,7 @@ async def on_message(message):
         # await client.send_message(message.channel, 'i!loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
     elif message.content.startswith('i!loop') and OtherVars['Loop'] == 'False':
         await client.send_message(message.channel, 'The i!loop function has been disabled, to re-enable it, please type i!enaloop.')
-    elif (message.content in insults) or ('I\'m Insults Bot' in message.content):
+    elif ((message.content in insults) and (message.author == client.user)) or ('I\'m Insults Bot' in message.content):
         await client.add_reaction(message, '😂')
     elif message.author == client.user:
         return
@@ -190,7 +190,7 @@ async def on_message(message):
         await client.send_message(message.channel, 'Sorry I don\'t know about that command yet, to see all available commands, please type i!help!')
     elif message.content.startswith('<@503096810961764364>, please leave'):
         await client.send_message(message.channel, 'I am sorry to have failed you, I will now leave.')
-        await client.leave_server(client.get_server('502781179368439808'))
+        await client.leave_server(client.get_server(message.server.id))
         # print(client.get_guild(id))
 
 @client.event
