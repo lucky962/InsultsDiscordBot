@@ -7,9 +7,6 @@ import re
 with open('BotToken.txt') as f:
     TOKEN = f.read()
 
-client = discord.Client()
-commands = {}
-
 with open('insults.txt') as f:
     insults = f.readlines()
 insults = [x.strip() for x in insults]
@@ -20,16 +17,20 @@ with open('OtherVars.txt', 'r') as document:
         line = line.split()
         OtherVars[line[0]] = line[1]
 
+client = discord.Client()
+
 @client.event
 async def on_message(message):
+    global insults
     global OtherVars
     print('{0.author.mention}'.format(message))
     print(message.content)
-    print(message)
 
+    # IDEAS FOR NEW FUNCTIONS
     # if '{0.author.mention}'.format(message) == '<@256334462697078784>':
     #     await client.send_message(message.channel, '<@256334462697078784> ' + insults[random.randint(0,len(insults))])
-
+    # if (sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2)) and (len(message.content) > 1):
+    #     await client.send_message(message.channel, 'No need to shout...')
     
     if message.content.startswith('i!disloop'):
         with open('OtherVars.txt', 'r') as document:
@@ -60,16 +61,24 @@ async def on_message(message):
         # await client.send_message(message.channel, 'i!loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
     elif message.content.startswith('i!loop') and OtherVars['Loop'] == 'False':
         await client.send_message(message.channel, 'The i!loop function has been disabled, to re-enable it, please type i!enaloop.')
+    elif (message.content in insults) or ('I\'m Insults Bot' in message.content):
+        await client.add_reaction(message, '😂')
     elif message.author == client.user:
         return
-    # if (sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2)) and (len(message.content) > 1):
-    #     await client.send_message(message.channel, 'No need to shout...')
     elif message.content.startswith('i!insult'):
-        global insults
-        await client.send_message(message.channel, insults[random.randint(0,len(insults))])
-    elif message.content.startswith('Hello <@!503096810961764364>'):
+        if len(message.content) > 9:
+            try:
+                await client.send_message(message.channel, insults[int(message.content[9:]) - 1])
+            except IndexError:
+                await client.send_message(message.channel, 'Sorry, I don\'t have that many/few insults, I only have ' + str(len(insults)) + ' insults, but here\'s another random insult.')
+                await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
+            except:
+                await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
+        else:
+            await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
+    elif message.content.startswith('Hello <@503096810961764364>'):
         await client.send_message(message.channel, 'Hello {0.author.mention}'.format(message))
-    elif message.content.startswith('<@!503096810961764364>, start the dad jokes'):
+    elif message.content.startswith('<@503096810961764364>, start the dad jokes'):
         with open('OtherVars.txt', "r") as document:
             data = document.readlines()
         data[1] = "DADJOKE True"
@@ -82,7 +91,7 @@ async def on_message(message):
                 OtherVars[line[0]] = line[1]
         await client.send_message(message.channel, 'Sure!')
         print(OtherVars['DADJOKE'])
-    elif message.content.startswith('<@!503096810961764364>, stop with the dad jokes'):
+    elif message.content.startswith('<@503096810961764364>, stop with the dad jokes'):
         with open('OtherVars.txt', "r") as document:
             data = document.readlines()
         data[1] = "DADJOKE False"
@@ -109,7 +118,7 @@ async def on_message(message):
         else:
             dadname = re.split("I\'m ", message.content, flags=re.IGNORECASE)
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
-    elif 'im' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
+    elif 'im' in message.content.lower() and 'him' not in message.content.lower() and OtherVars['DADJOKE'] == 'True':
         if 'insult' in message.content.lower():
             dadname = re.split("Im ", message.content, flags=re.IGNORECASE)
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
@@ -139,8 +148,8 @@ async def on_message(message):
             value="Displays this help page."
         )
         HelpMsg.add_field(
-            name="i!insults",
-            value="Displays a randomly selected Insult."
+            name="i!insult <number(optional)>",
+            value="Displays a randomly selected Insult. If a number is present, show the insult at that position."
         )
         HelpMsg.add_field(
             name="i!suggestion <suggestion>",
@@ -174,14 +183,12 @@ async def on_message(message):
         )   
         await client.send_message(message.channel, embed=HelpMsg)
     elif message.content.startswith('i!updatelog'):
-        await client.send_message(message.channel, '***Update Log***\n**Current update:** \nAdded a Dad Joke replying to one saying I\'m... \nFixed not responding if \"Im\" is in the middle of the sentence. \nAdded DadJoke Enabler/Disabler \nMade Help Menu look a looot better \nAdded stop function to i!loop function.\nAdded @bot please leave function\n**Things being worked on:**\nAdding bot\'s reactions to it\'s own insults')
-    elif message.content.startswith('i!react'):
-        await client.add_reaction(message, '😂')
+        await client.send_message(message.channel, '***Update Log***\n**Current update:** \nAdded a Dad Joke replying to one saying I\'m... \nFixed not responding if \"Im\" is in the middle of the sentence. \nAdded DadJoke Enabler/Disabler \nMade Help Menu look a looot better \nAdded stop function to i!loop function.\nAdded @bot please leave function\nAdded bot\'s reactions to it\'s own insults\n**Things being worked on:**\nNothing at the moment... If you have any suggestions, please let me (lucky962) know!')
     elif message.content.startswith('p!'):
         await client.send_message(message.channel, 'The new prefix for pokecord is \'p\'')
     elif message.content.startswith('i!'):
         await client.send_message(message.channel, 'Sorry I don\'t know about that command yet, to see all available commands, please type i!help!')
-    elif message.content.startswith('<@!503096810961764364>, please leave') or message.content.startswith('Test'):
+    elif message.content.startswith('<@503096810961764364>, please leave'):
         await client.send_message(message.channel, 'I am sorry to have failed you, I will now leave.')
         await client.leave_server(client.get_server('502781179368439808'))
         # print(client.get_guild(id))
@@ -193,5 +200,4 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
-
 client.run(TOKEN)
