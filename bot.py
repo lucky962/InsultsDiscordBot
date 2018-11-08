@@ -164,7 +164,7 @@ async def on_message(message):
         )
         HelpMsg.add_field(
             name="i!loop",
-            value="This makes the bot say i!loop on repeat. Type i!disloop to disable loop and i!enaloop to enable loop."
+            value=("This makes the bot say i!loop on repeat. Type i!disloop to disable loop and i!enaloop to enable loop. Loop is currently ") + ('enabled.' if OtherVars['Loop'] == 'True' else 'disabled.')
         )
         HelpMsg.timestamp
             #timestamp=new Date(),
