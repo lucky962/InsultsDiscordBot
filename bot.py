@@ -175,8 +175,6 @@ async def on_message(message):
             name="i!loop",
             value=("This makes the bot say i!loop on repeat. Type i!disloop to disable loop and i!enaloop to enable loop. Loop is currently ") + ('enabled.' if OtherVars['Loop'] == 'True' else 'disabled.')
         )
-        HelpMsg.timestamp
-            #timestamp=new Date(),
         HelpMsg.set_footer(
             icon_url=client.user.avatar_url,
             text="© 2018 Lucky's Creations"
