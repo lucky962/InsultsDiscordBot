@@ -175,6 +175,8 @@ async def on_message(message):
         await client.send_message(message.channel, embed=HelpMsg)
     elif message.content.startswith('i!updatelog'):
         await client.send_message(message.channel, '***Update Log***\n**Current update:** \nAdded a Dad Joke replying to one saying I\'m... \nFixed not responding if \"Im\" is in the middle of the sentence. \nAdded DadJoke Enabler/Disabler \nMade Help Menu look a looot better \nAdded stop function to i!loop function.\nAdded @bot please leave function\n**Things being worked on:**\nAdding bot\'s reactions to it\'s own insults')
+    elif message.content.startswith('i!react'):
+        await client.add_reaction(message, '😂')
     elif message.content.startswith('p!'):
         await client.send_message(message.channel, 'The new prefix for pokecord is \'p\'')
     elif message.content.startswith('i!'):
