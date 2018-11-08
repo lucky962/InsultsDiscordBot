@@ -63,28 +63,25 @@ async def on_message(message):
         print(OtherVars['DADJOKE'])
     elif 'i am' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
         if 'insult' in message.content.lower():
-            await client.send_message(message.channel, 'Hello ' + message.content[5:] + ', I\'m... wait... That\'s me!!!')
+            dadname = re.split("I am ", message.content, flags=re.IGNORECASE)
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
         else:
             dadname = re.split("I am ", message.content, flags=re.IGNORECASE)
-            print(dadname[1])
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
-            # await client.send_message(message.channel, 'Hello ' + message.content[5:] + ', I\'m Insults Bot!')
     elif 'i\'m' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
         if 'insult' in message.content.lower():
-            await client.send_message(message.channel, 'Hello ' + message.content[4:] + ', I\'m... wait... That\'s me!!!')
+            dadname = re.split("I\'m ", message.content, flags=re.IGNORECASE)
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
         else:
             dadname = re.split("I\'m ", message.content, flags=re.IGNORECASE)
-            print(dadname[1])
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
-            # await client.send_message(message.channel, 'Hello ' + message.content[4:] + ', I\'m Insults Bot!')
     elif 'im' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
         if 'insult' in message.content.lower():
-            await client.send_message(message.channel, 'Hello ' + message.content[3:] + ', I\'m... wait... That\'s me!!!')
+            dadname = re.split("Im ", message.content, flags=re.IGNORECASE)
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
         else:
             dadname = re.split("Im ", message.content, flags=re.IGNORECASE)
-            print(dadname[1])
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
-            # await client.send_message(message.channel, 'Hello ' + message.content[3:] + ', I\'m Insults Bot!')
     elif message.content.startswith('i!loop'):
         await client.send_message(message.channel, 'i!loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
     elif message.content.startswith('i!suggestion'):
