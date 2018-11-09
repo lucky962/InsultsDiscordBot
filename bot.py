@@ -118,6 +118,13 @@ async def on_message(message):
         else:
             dadname = re.split("I\'m ", message.content, flags=re.IGNORECASE)
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
+    elif 'i’m' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
+        if 'insult' in message.content.lower():
+            dadname = re.split("I’m ", message.content, flags=re.IGNORECASE)
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
+        else:
+            dadname = re.split("I’m ", message.content, flags=re.IGNORECASE)
+            await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
     elif 'im' in message.content.lower() and 'him' not in message.content.lower() and OtherVars['DADJOKE'] == 'True':
         if 'insult' in message.content.lower():
             dadname = re.split("Im ", message.content, flags=re.IGNORECASE)
