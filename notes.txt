@@ -1,0 +1,3 @@
+
+**Testing Commands Only USE AT YOUR OWN RISK**                               (although most don\'t work.)
+\n<@503096810961764364>, please leave: This nicely asks the bot to leave the server.\n'
