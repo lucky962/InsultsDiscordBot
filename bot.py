@@ -3,15 +3,18 @@ import discord
 import random
 import json
 import re
+import os
 
-with open('CMDDependencies\\BotToken.txt') as f:
+os.chdir('CMDDependencies')
+
+with open('BotToken.txt') as f:
     TOKEN = f.read()
 
-with open('CMDDependencies\\insults.txt') as f:
+with open('insults.txt') as f:
     insults = f.readlines()
 insults = [x.strip() for x in insults]
 
-with open('CMDDependencies\\OtherVars.txt', 'r') as document:
+with open('OtherVars.txt', 'r') as document:
     OtherVars = {}
     for line in document:
         line = line.split()
@@ -33,24 +36,24 @@ async def on_message(message):
     #     await client.send_message(message.channel, 'No need to shout...')
     
     if message.content.startswith('i!disloop'):
-        with open('CMDDependencies\\OtherVars.txt', 'r') as document:
+        with open('OtherVars.txt', 'r') as document:
             data = document.readlines()
         data[0] = 'Loop False\n'
-        with open('CMDDependencies\\OtherVars.txt', 'w') as document:
+        with open('OtherVars.txt', 'w') as document:
             document.writelines(data)
-        with open('CMDDependencies\\OtherVars.txt', 'r') as document:
+        with open('OtherVars.txt', 'r') as document:
             OtherVars = {}
             for line in document:
                 line = line.split()
                 OtherVars[line[0]] = line[1]
         await client.send_message(message.channel, 'Loop Disabled')
     elif message.content.startswith('i!enaloop'):
-        with open('CMDDependencies\\OtherVars.txt', 'r') as document:
+        with open('OtherVars.txt', 'r') as document:
             data = document.readlines()
         data[0] = 'Loop True\n'
-        with open('CMDDependencies\\OtherVars.txt', 'w') as document:
+        with open('OtherVars.txt', 'w') as document:
             document.writelines(data)
-        with open('CMDDependencies\\OtherVars.txt', 'r') as document:
+        with open('OtherVars.txt', 'r') as document:
             OtherVars = {}
             for line in document:
                 line = line.split()
@@ -79,12 +82,12 @@ async def on_message(message):
     elif message.content.startswith('Hello <@503096810961764364>'):
         await client.send_message(message.channel, 'Hello {0.author.mention}'.format(message))
     elif message.content.startswith('<@503096810961764364>, start the dad jokes'):
-        with open('CMDDependencies\\OtherVars.txt', "r") as document:
+        with open('OtherVars.txt', "r") as document:
             data = document.readlines()
         data[1] = "DADJOKE True"
-        with open('CMDDependencies\\OtherVars.txt', "w") as document:
+        with open('OtherVars.txt', "w") as document:
             document.writelines(data)
-        with open('CMDDependencies\\OtherVars.txt', 'r') as document:
+        with open('OtherVars.txt', 'r') as document:
             OtherVars = {}
             for line in document:
                 line = line.split()
@@ -92,12 +95,12 @@ async def on_message(message):
         await client.send_message(message.channel, 'Sure!')
         print(OtherVars['DADJOKE'])
     elif message.content.startswith('<@503096810961764364>, stop with the dad jokes'):
-        with open('CMDDependencies\\OtherVars.txt', "r") as document:
+        with open('OtherVars.txt', "r") as document:
             data = document.readlines()
         data[1] = "DADJOKE False"
-        with open('CMDDependencies\\OtherVars.txt', "w") as document:
+        with open('OtherVars.txt', "w") as document:
             document.writelines(data)
-        with open('CMDDependencies\\OtherVars.txt', 'r') as document:
+        with open('OtherVars.txt', 'r') as document:
             OtherVars = {}
             for line in document:
                 line = line.split()
@@ -136,10 +139,10 @@ async def on_message(message):
             else:
                 await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
     elif message.content.startswith('i!suggestion'):
-        file = open("CMDDependencies\\insults.txt","a")
+        file = open("insults.txt","a")
         file.write(message.content[13:] + '\n')
         file.close()
-        with open('CMDDependencies\\insults.txt') as f:
+        with open('insults.txt') as f:
             insults = f.readlines()
         insults = [x.strip() for x in insults]
         await client.send_message(message.channel, 'Thank you for the insult suggestion, it has been added to the list of insults!')
@@ -191,7 +194,7 @@ async def on_message(message):
         )   
         await client.send_message(message.channel, embed=HelpMsg)
     elif message.content.startswith('i!updatelog'):
-        doc = open('CMDDependencies\\updatelog.txt','r')
+        doc = open('updatelog.txt','r')
         updatelog = doc.read()
         await client.send_message(message.channel, updatelog)
         doc.close()
