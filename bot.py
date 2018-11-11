@@ -105,33 +105,36 @@ async def on_message(message):
         await client.send_message(message.channel, 'Fine...')
         print(OtherVars['DADJOKE'])
     elif 'i am' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
+        dadname = re.split("I am ", message.content, flags=re.IGNORECASE)
         if 'insult' in message.content.lower():
-            dadname = re.split("I am ", message.content, flags=re.IGNORECASE)
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
         else:
-            dadname = re.split("I am ", message.content, flags=re.IGNORECASE)
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
     elif 'i\'m' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
+        dadname = re.split("I\'m ", message.content, flags=re.IGNORECASE)
         if 'insult' in message.content.lower():
-            dadname = re.split("I\'m ", message.content, flags=re.IGNORECASE)
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
         else:
-            dadname = re.split("I\'m ", message.content, flags=re.IGNORECASE)
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
     elif 'i’m' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
+        dadname = re.split("I’m ", message.content, flags=re.IGNORECASE)
         if 'insult' in message.content.lower():
-            dadname = re.split("I’m ", message.content, flags=re.IGNORECASE)
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
         else:
-            dadname = re.split("I’m ", message.content, flags=re.IGNORECASE)
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
-    elif 'im' in message.content.lower() and 'him' not in message.content.lower() and OtherVars['DADJOKE'] == 'True':
+    elif ' im' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
+        dadname = re.split("Im ", message.content, flags=re.IGNORECASE)
         if 'insult' in message.content.lower():
-            dadname = re.split("Im ", message.content, flags=re.IGNORECASE)
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
         else:
-            dadname = re.split("Im ", message.content, flags=re.IGNORECASE)
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
+    elif 'im' in message.content.lower() and OtherVars['DADJOKE'] == 'True':
+        dadname = re.split("Im ", message.content, flags=re.IGNORECASE)
+        if len(dadname[0]) == 0:
+            if 'insult' in message.content.lower():
+                await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
+            else:
+                await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
     elif message.content.startswith('i!suggestion'):
         file = open("insults.txt","a")
         file.write(message.content[13:] + '\n')
