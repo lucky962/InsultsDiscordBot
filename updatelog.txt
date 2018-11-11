@@ -1,0 +1,11 @@
+**Current update:** 
+Added a Dad Joke replying to one saying I'm... 
+Fixed not responding if "Im" is in the middle of the sentence. 
+Added DadJoke Enabler/Disabler 
+Made Help Menu look a looot better 
+Added stop function to i!loop function.
+Added @bot please leave function\nAdded bot's reactions to it's own insults
+Fixed bug where words with "im" in them will have the bot respond.
+**Things being worked on:**
+Adding anti-spam
+Working on mod logs

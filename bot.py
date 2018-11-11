@@ -191,7 +191,10 @@ async def on_message(message):
         )   
         await client.send_message(message.channel, embed=HelpMsg)
     elif message.content.startswith('i!updatelog'):
-        await client.send_message(message.channel, '**Current update:** \nAdded a Dad Joke replying to one saying I\'m... \nFixed not responding if \"Im\" is in the middle of the sentence. \nAdded DadJoke Enabler/Disabler \nMade Help Menu look a looot better \nAdded stop function to i!loop function.\nAdded @bot please leave function\nAdded bot\'s reactions to it\'s own insults\nFixed bug where words with "im" in them will have the bot respond.\n**Things being worked on:**\nNothing at the moment... If you have any suggestions, please let me (lucky962) know!')
+        doc = open('updatelog.txt','r')
+        updatelog = doc.read()
+        await client.send_message(message.channel, updatelog)
+        doc.close()
     elif message.content.startswith('p!'):
         await client.send_message(message.channel, 'The new prefix for pokecord is \'p\'')
     elif message.content.startswith('i!'):
