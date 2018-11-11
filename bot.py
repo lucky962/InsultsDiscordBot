@@ -144,7 +144,7 @@ async def on_message(message):
         insults = [x.strip() for x in insults]
         await client.send_message(message.channel, 'Thank you for the insult suggestion, it has been added to the list of insults!')
     elif message.content.startswith('i!help'):
-            HelpMsg = discord.Embed(
+        HelpMsg = discord.Embed(
             title="Help Page",
             description="This is a page full of commands you can use with Insults Bot",
             color=3447003
