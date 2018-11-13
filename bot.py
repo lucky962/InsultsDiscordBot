@@ -202,10 +202,11 @@ async def on_message(message):
         )   
         await client.send_message(message.channel, embed=HelpMsg)
     elif message.content.startswith('i!updatelog'):
-        doc = open('updatelog.txt','r')
-        updatelog = doc.read()
-        await client.send_message(message.channel, updatelog)
-        doc.close()
+        # doc = open('updatelog.txt','r')
+        # updatelog = doc.read()
+        # await client.send_message(message.channel, updatelog)
+        # doc.close()
+        await client.send_message(message.channel, "To view the update log, please visit http://discordbotupdates.luckysweb.net/")
     elif message.content.startswith('i!'):
         await client.send_message(message.channel, 'Sorry I don\'t know about that command yet, to see all available commands, please type i!help!')
     elif message.content.startswith('<@503096810961764364>, please leave') or message.content.startswith('<@!503096810961764364>, please leave'):
