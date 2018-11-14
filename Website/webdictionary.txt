@@ -8,7 +8,6 @@
 <h1>Insults Bot Update Log</h1>
 <p>During Early Access we have a number of features we wish to add to the website and we will be using this page as our public roadmap so everyone see what we have planned.</p>
 <p>This page will be updated as we progress through development. You can expect additions/removals depending on development progress.</p>
-<p>If you would like to let us know of any suggestions you have to make our bot better, please click <a href="http://discordbotupdates.luckysweb.net/botsuggestions.html">this</a> to be redirected to the Feedback Form!</p>
 <p><strong>Last Updated: 1st July 2018</strong></p>
 <h2>New Features</h2>
 <table style="width:100%">
@@ -87,12 +86,14 @@
 	</tr>
 </table>
 <h2>Suggestions</h2>
-<table style='width:100%'>
 	<tr>
 		<th style="width:15%">Type</th>
 		<th style="width:15%">Status</th>
 		<th style="width:70%">Notes</th>
-	</tr>
-</table>
+	   <tr>
+        <td>BugReport</td>
+        <td><b>Awaiting Verification</b></td>
+        <td>asdfasf</td>
+    </tr>
 </body>
 </html>
