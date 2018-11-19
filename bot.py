@@ -116,25 +116,25 @@ async def on_message(message):
         await client.send_message(message.channel, 'Fine...')
     elif 'i am' in message.content.lower() and (message.server.id in djenable):
         dadname = re.split("I am ", message.content, flags=re.IGNORECASE)
-        if 'insult' in message.content.lower():
+        if 'insult bot' in message.content.lower() or 'insult bots' in message.content.lower():
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
         else:
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
     elif 'i\'m' in message.content.lower() and (message.server.id in djenable):
         dadname = re.split("I\'m ", message.content, flags=re.IGNORECASE)
-        if 'insult' in message.content.lower():
+        if 'insult bot' in message.content.lower() or 'insult bots' in message.content.lower():
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
         else:
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
     elif 'i’m' in message.content.lower() and (message.server.id in djenable):
         dadname = re.split("I’m ", message.content, flags=re.IGNORECASE)
-        if 'insult' in message.content.lower():
+        if 'insult bot' in message.content.lower() or 'insult bots' in message.content.lower():
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
         else:
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
     elif ' im ' in message.content.lower() and (message.server.id in djenable):
         dadname = re.split("Im ", message.content, flags=re.IGNORECASE)
-        if 'insult' in message.content.lower():
+        if 'insult bot' in message.content.lower() or 'insult bots' in message.content.lower():
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
         else:
             await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
@@ -142,7 +142,7 @@ async def on_message(message):
         print('dadjoke')
         dadname = re.split("Im ", message.content, flags=re.IGNORECASE)
         if len(dadname[0]) == 0:
-            if 'insult' in message.content.lower():
+            if 'insult bot' in message.content.lower() or 'insult bots' in message.content.lower():
                 await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
             else:
                 await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
