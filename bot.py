@@ -114,6 +114,16 @@ async def on_message(message):
         with open('DJENABLED.txt','w') as document:
             document.writelines(djenabledit)
         await client.send_message(message.channel, 'Fine...')
+    elif (message.content.startswith('<@503096810961764364>') or message.content.startswith('<@!503096810961764364>')) and ("shut" in message.content.lower()) and ("up" in message.content.lower()):
+        with open('DJENABLED.txt','r') as document:
+            djenable = document.readlines()
+            djenable[:] = [x.rstrip('\n') for x in djenable]
+            if message.server.id in djenable:
+                djenable.remove(message.server.id)
+            djenabledit[:] = [x + '\n' for x in djenable]
+        with open('DJENABLED.txt','w') as document:
+            document.writelines(djenabledit)
+        await client.send_message(message.channel, 'No need to be so rude')
     elif 'i am' in message.content.lower() and (message.server.id in djenable):
         dadname = re.split("I am ", message.content, flags=re.IGNORECASE)
         if 'insult bot' in message.content.lower() or 'insult bots' in message.content.lower():
