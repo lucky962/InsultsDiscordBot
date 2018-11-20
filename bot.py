@@ -123,7 +123,7 @@ async def on_message(message):
             djenabledit[:] = [x + '\n' for x in djenable]
         with open('DJENABLED.txt','w') as document:
             document.writelines(djenabledit)
-        await client.send_message(message.channel, 'No need to be so rude')
+        await client.send_message(message.channel, 'No need to be so rude, but fine I\'ll stop')
     elif 'i am' in message.content.lower() and (message.server.id in djenable):
         dadname = re.split("I am ", message.content, flags=re.IGNORECASE)
         if 'insult bot' in message.content.lower() or 'insult bots' in message.content.lower():
