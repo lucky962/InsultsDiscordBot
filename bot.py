@@ -59,17 +59,17 @@ async def on_message(message):
         await client.send_message(message.channel, 'Loop Disabled')
     elif message.content.startswith('i!enaloop'):
         await client.send_message(message.channel, 'Sorry, Loop has been temporarily disabled, we apologise for the inconveniences')
-    #     with open('OtherVars.txt', 'r') as document:
-    #         data = document.readlines()
-    #     data[0] = 'Loop True\n'
-    #     with open('OtherVars.txt', 'w') as document:
-    #         document.writelines(data)
-    #     with open('OtherVars.txt', 'r') as document:
-    #         OtherVars = {}
-    #         for line in document:
-    #             line = line.split()
-    #             OtherVars[line[0]] = line[1]
-    #     await client.send_message(message.channel, 'Loop Enabled')
+        # with open('OtherVars.txt', 'r') as document:
+        #     data = document.readlines()
+        # data[0] = 'Loop True\n'
+        # with open('OtherVars.txt', 'w') as document:
+        #     document.writelines(data)
+        # with open('OtherVars.txt', 'r') as document:
+        #     OtherVars = {}
+        #     for line in document:
+        #         line = line.split()
+        #         OtherVars[line[0]] = line[1]
+        # await client.send_message(message.channel, 'Loop Enabled')
     elif message.content.startswith('i!loop') and OtherVars['Loop'] == 'True':
         await client.send_message(message.channel, 'i!loop')
         # await client.send_message(message.channel, 'i!loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
@@ -93,7 +93,7 @@ async def on_message(message):
             await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
     elif message.content.startswith('Hello <@503096810961764364>') or message.content.startswith('Hello <@!503096810961764364>'):
         await client.send_message(message.channel, 'Hello {0.author.mention}'.format(message))
-    elif message.content.startswith('<@503096810961764364>, start the dad jokes') or message.content.startswith('<@!503096810961764364>, start the dad jokes'):
+    elif ('<@503096810961764364>' in message.content.lower() or '<@!503096810961764364>' in message.content.lower()) and 'start' in message.content.lower() and 'dad joke' in message.content.lower():
         with open('DJENABLED.txt','r') as document:
             djenable = document.readlines()
             djenable[:] = [x.rstrip('\n') for x in djenable]
@@ -104,7 +104,7 @@ async def on_message(message):
             document.writelines(djenabledit)
         await client.send_message(message.channel, 'Sure!')
         print(OtherVars['DADJOKE'])
-    elif message.content.startswith('<@503096810961764364>, stop the dad jokes') or message.content.startswith('<@!503096810961764364>, stop the dad jokes'):
+    elif ('<@503096810961764364>' in message.content.lower() or '<@!503096810961764364>' in message.content.lower()) and 'stop' in message.content.lower() and 'dad joke' in message.content.lower():
         with open('DJENABLED.txt','r') as document:
             djenable = document.readlines()
             djenable[:] = [x.rstrip('\n') for x in djenable]
