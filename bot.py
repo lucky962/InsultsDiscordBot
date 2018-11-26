@@ -98,38 +98,38 @@ async def on_message(message):
             djenable = document.readlines()
             djenable[:] = [x.rstrip('\n') for x in djenable]
             if not message.server.id in djenable:
+                await client.send_message(message.channel, 'Sure!')
                 djenable.append(message.server.id)
             else:
                 await client.send_message(message.channel, 'Dad jokes are already enabled.')
             djenabledit[:] = [x + '\n' for x in djenable]
         with open('DJENABLED.txt','w') as document:
             document.writelines(djenabledit)
-        await client.send_message(message.channel, 'Sure!')
         print(OtherVars['DADJOKE'])
     elif ('<@503096810961764364>' in message.content.lower() or '<@!503096810961764364>' in message.content.lower()) and 'stop' in message.content.lower() and 'dad joke' in message.content.lower():
         with open('DJENABLED.txt','r') as document:
             djenable = document.readlines()
             djenable[:] = [x.rstrip('\n') for x in djenable]
             if message.server.id in djenable:
+                await client.send_message(message.channel, 'Fine...')
                 djenable.remove(message.server.id)
             else:
                 await client.send_message(message.channel, 'Dad jokes are already disabled.')
             djenabledit[:] = [x + '\n' for x in djenable]
         with open('DJENABLED.txt','w') as document:
             document.writelines(djenabledit)
-        await client.send_message(message.channel, 'Fine...')
     elif (message.content.startswith('<@503096810961764364>') or message.content.startswith('<@!503096810961764364>')) and ("shut" in message.content.lower()) and ("up" in message.content.lower()):
         with open('DJENABLED.txt','r') as document:
             djenable = document.readlines()
             djenable[:] = [x.rstrip('\n') for x in djenable]
             if message.server.id in djenable:
+                await client.send_message(message.channel, 'No need to be so rude, but fine I\'ll stop')
                 djenable.remove(message.server.id)
             else:
                 await client.send_message(message.channel, 'Dad jokes are already disabled.')
             djenabledit[:] = [x + '\n' for x in djenable]
         with open('DJENABLED.txt','w') as document:
             document.writelines(djenabledit)
-        await client.send_message(message.channel, 'No need to be so rude, but fine I\'ll stop')
     elif 'i am' in message.content.lower() and (message.server.id in djenable):
         dadname = re.split("I am ", message.content, flags=re.IGNORECASE)
         if 'insult bot' in message.content.lower() or 'insult bots' in message.content.lower():
