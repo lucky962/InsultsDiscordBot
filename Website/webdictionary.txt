@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+    <title>InsultsBotInfo</title>
+    <link rel="stylesheet" href="botinfo.css">
+</head>
+<body>
+<h1>Insults Bot Update Log</h1>
+<p>During Early Access we have a number of features we wish to add to the website and we will be using this page as our public roadmap so everyone see what we have planned.</p>
+<p>This page will be updated as we progress through development. You can expect additions/removals depending on development progress.</p>
+<p><strong>Last Updated: 1st July 2018</strong></p>
+<h2>New Features</h2>
+<table style="width:100%">
+    <tr>
+        <th style="width:15%">Features</th>
+        <th style="width:15%">Status</th>
+        <th style="width:70%">Notes</th>
+    </tr>
+    <tr>
+        <td>Dad Joke</td>
+		<td><b>Complete</b> - 11/11/2018</td>
+		<td>Added Dad Joke responding to anyone saying "I'm"</td>
+    </tr>
+	<tr>
+	    <td>Disable/Enable Dad Jokes</td>
+        <td><b>Complete</b> - 11/11/2018</td>
+	    <td>Added a function where dad jokes can be enabled or disabled.</td>
+	</tr>
+    <tr>
+        <td>i!loop function</td>
+	    <td><b>Complete</b> - 11/11/2018</td>
+        <td>This is the Tutorials/Cheat Sheet page seen by clicking the box above.</td>
+    </tr>
+    <tr>
+        <td>i!insult</td>  
+  	    <td><b>Complete</b> - 1/11/2018</td>
+	      <td>Displays a randomly selected Insult. If a number is present, show the insult at that position.</td>
+	</tr>
+	<tr>
+	    <td>i!help</td>
+	    <td><b>Complete</b> - 1/11/2018</td>
+        <td>This it the Meet the Team Page and the Contact Us Page you can check out above!</td>
+	</tr>
+	<tr>
+	    <td>@insults, please leave</td>
+        <td><b>Complete</b> - 11/11/2018</td>
+	    <td>This asks the Insults discord bot to kindly leave.</td>
+	</tr>
+	<tr>
+	    <td>Anti-spam</td>
+        <td><b>In Progress</b></td>
+	    <td>Anti-spam will be added in order to reduce the amount of spam in servers</td>
+	</tr>
+	<tr>
+	    <td>Mod logs</td>
+        <td>Being planned</td>
+	    <td>This will show everything the mods did, including bans, kicks and more</td>
+	</tr>
+</table>
+<h2>Bug Fixes</h2>
+<table style='width:100%'>
+    <tr>
+        <th style="width:15%">Type of Change</th>
+        <th style="width:15%">Status</th>
+        <th style="width:70%">Notes</th>
+    </tr>
+	<tr>
+	    <td>Improved Looks</td>
+        <td><b>Complete</b> - 11/11/2018</td>
+	    <td>Improved the looks of i!help</td>
+	</tr>
+	<tr>
+	    <td>Bug Fix</td>
+        <td><b>Complete</b> - 11/11/2018</td>
+	    <td>Fixed Bot not responding to "I'm" in the middle of a sentence.</td>
+	</tr>
+	<tr>
+	    <td>Bug Fix</td>
+        <td><b>Complete</b> - 11/11/2018</td>
+	    <td>Fixed stop function to i!loop</td>
+	</tr>
+	<tr>
+	    <td>Bug Fix</td>
+        <td><b>Complete</b> - 11/11/2018</td>
+	    <td>Fixed bot responding to sentences with a word ending in im</td>
+	</tr>
+</table>
+<h2>Suggestions</h2>
+	<tr>
+		<th style="width:15%">Type</th>
+		<th style="width:15%">Status</th>
+		<th style="width:70%">Notes</th>
+	   <tr>
+        <td>BugReport</td>
+        <td><b>Awaiting Verification</b></td>
+        <td>asdfasf</td>
+    </tr>
+</body>
+</html>
