@@ -99,6 +99,8 @@ async def on_message(message):
             djenable[:] = [x.rstrip('\n') for x in djenable]
             if not message.server.id in djenable:
                 djenable.append(message.server.id)
+            else:
+                await client.send_message(message.channel, 'Dad jokes are already enabled.')
             djenabledit[:] = [x + '\n' for x in djenable]
         with open('DJENABLED.txt','w') as document:
             document.writelines(djenabledit)
@@ -110,6 +112,8 @@ async def on_message(message):
             djenable[:] = [x.rstrip('\n') for x in djenable]
             if message.server.id in djenable:
                 djenable.remove(message.server.id)
+            else:
+                await client.send_message(message.channel, 'Dad jokes are already disabled.')
             djenabledit[:] = [x + '\n' for x in djenable]
         with open('DJENABLED.txt','w') as document:
             document.writelines(djenabledit)
@@ -120,6 +124,8 @@ async def on_message(message):
             djenable[:] = [x.rstrip('\n') for x in djenable]
             if message.server.id in djenable:
                 djenable.remove(message.server.id)
+            else:
+                await client.send_message(message.channel, 'Dad jokes are already disabled.')
             djenabledit[:] = [x + '\n' for x in djenable]
         with open('DJENABLED.txt','w') as document:
             document.writelines(djenabledit)
