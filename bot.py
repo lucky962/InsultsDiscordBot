@@ -7,6 +7,7 @@ import os
 
 os.chdir('CMDDependencies')
 djenable = []
+CMDPrefix = 'i!'
 
 with open('BotToken.txt') as f:
     TOKEN = f.read()
@@ -44,7 +45,8 @@ async def on_message(message):
     #     await client.send_message(message.channel, '<@256334462697078784> ' + insults[random.randint(0,len(insults))])
     # if (sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2)) and (len(message.content) > 1):
     #     await client.send_message(message.channel, 'No need to shout...')
-    
+    if message.content.startswith(CMDPrefix):
+        message = message.content[2:]
     if message.content.startswith('i!disloop'):
         with open('OtherVars.txt', 'r') as document:
             data = document.readlines()
