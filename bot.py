@@ -4,6 +4,7 @@ import random
 import json
 import re
 import os
+from CMDDependencies.ServerPrefixes import *
 
 os.chdir('CMDDependencies')
 djenable = []
@@ -44,53 +45,135 @@ async def on_message(message):
     #     await client.send_message(message.channel, '<@256334462697078784> ' + insults[random.randint(0,len(insults))])
     # if (sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2)) and (len(message.content) > 1):
     #     await client.send_message(message.channel, 'No need to shout...')
-    
-    if message.content.startswith('i!disloop'):
-        with open('OtherVars.txt', 'r') as document:
-            data = document.readlines()
-        data[0] = 'Loop False\n'
-        with open('OtherVars.txt', 'w') as document:
-            document.writelines(data)
-        with open('OtherVars.txt', 'r') as document:
-            OtherVars = {}
-            for line in document:
-                line = line.split()
-                OtherVars[line[0]] = line[1]
-        await client.send_message(message.channel, 'Loop Disabled')
-    elif message.content.startswith('i!enaloop'):
-        await client.send_message(message.channel, 'Sorry, Loop has been temporarily disabled, we apologise for the inconveniences')
-        # with open('OtherVars.txt', 'r') as document:
-        #     data = document.readlines()
-        # data[0] = 'Loop True\n'
-        # with open('OtherVars.txt', 'w') as document:
-        #     document.writelines(data)
-        # with open('OtherVars.txt', 'r') as document:
-        #     OtherVars = {}
-        #     for line in document:
-        #         line = line.split()
-        #         OtherVars[line[0]] = line[1]
-        # await client.send_message(message.channel, 'Loop Enabled')
-    elif message.content.startswith('i!loop') and OtherVars['Loop'] == 'True':
-        await client.send_message(message.channel, 'i!loop')
-        # await client.send_message(message.channel, 'i!loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
-    elif message.content.startswith('i!loop') and OtherVars['Loop'] == 'False':
-        await client.send_message(message.channel, 'The i!loop function has been disabled until further notice.')
-        # to re-enable it, please type i!enaloop.')
-    elif ((message.content in insults) and (message.author == client.user)) or ('I\'m Insults Bot' in message.content):
-        await client.add_reaction(message, '😂')
-    elif message.author == client.user:
-        return
-    elif message.content.startswith('i!insult'):
-        if len(message.content) > 9:
-            try:
-                await client.send_message(message.channel, insults[int(message.content[9:]) - 1])
-            except IndexError:
-                await client.send_message(message.channel, 'Sorry, I don\'t have that many/few insults, I only have ' + str(len(insults)) + ' insults, but here\'s another random insult.')
+    if message.content.startswith(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!'):
+        messege = message.content[len(CMDPrefix.get(message.server.id)):]
+        print(message)
+        if messege.startswith('loop') and OtherVars['Loop'] == 'True':
+            await client.send_message(message.channel, 'loop')
+            # await client.send_message(message.channel, 'loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
+        elif messege.startswith('loop') and OtherVars['Loop'] == 'False':
+            await client.send_message(message.channel, 'The loop function has been disabled until further notice.')
+            # to re-enable it, please type enaloop.')
+        elif message.author == client.user:
+            return
+        elif messege.startswith('disloop'):
+            with open('OtherVars.txt', 'r') as document:
+                data = document.readlines()
+            data[0] = 'Loop False\n'
+            with open('OtherVars.txt', 'w') as document:
+                document.writelines(data)
+            with open('OtherVars.txt', 'r') as document:
+                OtherVars = {}
+                for line in document:
+                    line = line.split()
+                    OtherVars[line[0]] = line[1]
+            await client.send_message(message.channel, 'Loop Disabled')
+        elif messege.startswith('enaloop'):
+            await client.send_message(message.channel, 'Sorry, Loop has been temporarily disabled, we apologise for the inconveniences')
+            # with open('OtherVars.txt', 'r') as document:
+            #     data = document.readlines()
+            # data[0] = 'Loop True\n'
+            # with open('OtherVars.txt', 'w') as document:
+            #     document.writelines(data)
+            # with open('OtherVars.txt', 'r') as document:
+            #     OtherVars = {}
+            #     for line in document:
+            #         line = line.split()
+            #         OtherVars[line[0]] = line[1]
+            # await client.send_message(message.channel, 'Loop Enabled')
+        elif messege.startswith('insult'):
+            if len(messege) > 9:
+                try:
+                    await client.send_message(message.channel, insults[int(message[9:]) - 1])
+                except IndexError:
+                    await client.send_message(message.channel, 'Sorry, I don\'t have that many/few insults, I only have ' + str(len(insults)) + ' insults, but here\'s another random insult.')
+                    await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
+                except:
+                    await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
+            else:
                 await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
-            except:
-                await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
+        elif messege.startswith('suggestion'):
+            file = open("insults.txt","a")
+            file.write(message[13:] + '\n')
+            file.close()
+            with open('insults.txt') as f:
+                insults = f.readlines()
+            insults = [x.strip() for x in insults]
+            await client.send_message(message.channel, 'Thank you for the insult suggestion, it has been added to the list of insults!')
+        elif messege.startswith('help'):
+            HelpMsg = discord.Embed(
+                title="Help Page",
+                description="This is a page full of commands you can use with Insults Bot",
+                color=3447003
+            )
+            HelpMsg.set_author(
+                name='Insults Bot', 
+                icon_url=client.user.avatar_url
+                )
+            HelpMsg.add_field(
+                name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "help",
+                value="Displays this help page."
+            )
+            HelpMsg.add_field(
+                name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "insult <number(optional)>",
+                value="Displays a randomly selected Insult. If a number is present, show the insult at that position."
+            )
+            HelpMsg.add_field(
+                name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "suggestion <suggestion>",
+                value="This adds an insult to the list of insults that this bot chooses from."
+            )
+            HelpMsg.add_field(
+                name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "prefix <prefix>",
+                value=("This changes the prefix for commandsv")
+            )            
+            HelpMsg.add_field(
+                name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "loop",
+                value=("This makes the bot say this command on repeat. Loop is currently ") + ('enabled.' if OtherVars['Loop'] == 'True' else 'disabled until further notice.')
+            )
+            HelpMsg.add_field(
+                name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "updatelog",
+                value="This shows the improvements from the last update and upcoming updates."
+            )
+            HelpMsg.add_field(
+                name="@Insults, stop/start dad jokes",
+                value="This stops/allows the insult bot from making any more dad jokes. DadJokes are disabled at default."
+            )
+            HelpMsg.add_field(
+                name="@Insults, please leave",
+                value="This will force the bot to leave the server, please don\'t do this."
+            )
+            HelpMsg.set_footer(
+                icon_url=client.user.avatar_url,
+                text="© 2018 Lucky's Creations"
+            )   
+            await client.send_message(message.channel, embed=HelpMsg)
+        elif messege.startswith('updatelog'):
+            # doc = open('updatelog.txt','r')
+            # updatelog = doc.read()
+            # await client.send_message(message.channel, updatelog)
+            # doc.close()
+            await client.send_message(message.channel, "To view the update log, please visit http://discordbotupdates.luckysweb.net/")
+        elif messege.startswith('test'):
+            await client.send_message(message.channel, 'Debug comments ' + '{0.author.mention}'.format(message) + ' ' + message.content +  ' ' + message.server.id +  ' ' + str(djenable) + str(CMDPrefix))
+        elif messege.startswith('prefix'):
+            if len(messege) < 8:
+                await client.send_message(message.channel, 'Your prefix has been set to the default(i!) from ' + CMDPrefix.get(message.server.id))
+                CMDPrefix.update({message.server.id:'i!'})
+                with open('ServerPrefixes.py','w') as f:
+                    f.write("CMDPrefix = {\n")
+                    for key,val in CMDPrefix.items():
+                        f.write('    \'' + key + '\':\'' + val + '\',\n')
+                    f.write('}\n')
+            elif len(messege) > 7:
+                await client.send_message(message.channel, 'You have changed your prefix from ' + CMDPrefix.get(message.server.id) + ' to ' + messege[7:])
+                CMDPrefix.update({message.server.id:messege[7:]})
+                with open('ServerPrefixes.py','w') as f:
+                    f.write("CMDPrefix = {\n")
+                    for key,val in CMDPrefix.items():
+                        f.write('    \'' + key + '\':\'' + val + '\',\n')
+                    f.write('}\n')
         else:
-            await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
+            await client.send_message(message.channel, 'Sorry I don\'t know about that command yet, to see all available commands, please type ' + (CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + 'help')
     elif message.content.startswith('Hello <@503096810961764364>') or message.content.startswith('Hello <@!503096810961764364>'):
         await client.send_message(message.channel, 'Hello {0.author.mention}'.format(message))
     elif ('<@503096810961764364>' in message.content.lower() or '<@!503096810961764364>' in message.content.lower()) and 'start' in message.content.lower() and 'dad joke' in message.content.lower():
@@ -162,69 +245,8 @@ async def on_message(message):
                 await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
             else:
                 await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
-    elif message.content.startswith('i!suggestion'):
-        file = open("insults.txt","a")
-        file.write(message.content[13:] + '\n')
-        file.close()
-        with open('insults.txt') as f:
-            insults = f.readlines()
-        insults = [x.strip() for x in insults]
-        await client.send_message(message.channel, 'Thank you for the insult suggestion, it has been added to the list of insults!')
-    elif message.content.startswith('i!help'):
-        HelpMsg = discord.Embed(
-            title="Help Page",
-            description="This is a page full of commands you can use with Insults Bot",
-            color=3447003
-        )
-        HelpMsg.set_author(
-            name='Insults Bot', 
-            icon_url=client.user.avatar_url
-            )
-        HelpMsg.add_field(
-            name="i!help",
-            value="Displays this help page."
-        )
-        HelpMsg.add_field(
-            name="i!insult <number(optional)>",
-            value="Displays a randomly selected Insult. If a number is present, show the insult at that position."
-        )
-        HelpMsg.add_field(
-            name="i!suggestion <suggestion>",
-            value="This adds an insult to the list of insults that this bot chooses from."
-        )
-        HelpMsg.add_field(
-            name="i!updatelog",
-            value="This shows the improvements from the last update and upcoming updates."
-        )
-        HelpMsg.add_field(
-            name="@Insults, stop the dad jokes",
-            value="This stops insults bot from making any more dad jokes or until reenabled. DadJokes are disabled at default."
-        )
-        HelpMsg.add_field(
-            name="@Insults, start the dad jokes",
-            value="This allows insults bot to make dad jokes. Example of dad joke that this bot makes: Someone: I'm happy. Bot: Hi happy!"
-        )
-        HelpMsg.add_field(
-            name="@Insults, please leave",
-            value="This will force the bot to leave the server, please don\'t do this."
-        )
-        HelpMsg.add_field(
-            name="i!loop",
-            value=("This makes the bot say i!loop on repeat. Type i!disloop to disable loop and i!enaloop to enable loop. Loop is currently ") + ('enabled.' if OtherVars['Loop'] == 'True' else 'disabled until further notice.')
-        )
-        HelpMsg.set_footer(
-            icon_url=client.user.avatar_url,
-            text="© 2018 Lucky's Creations"
-        )   
-        await client.send_message(message.channel, embed=HelpMsg)
-    elif message.content.startswith('i!updatelog'):
-        # doc = open('updatelog.txt','r')
-        # updatelog = doc.read()
-        # await client.send_message(message.channel, updatelog)
-        # doc.close()
-        await client.send_message(message.channel, "To view the update log, please visit http://discordbotupdates.luckysweb.net/")
-    elif message.content.startswith('i!'):
-        await client.send_message(message.channel, 'Sorry I don\'t know about that command yet, to see all available commands, please type i!help!')
+    elif ((message.content in insults) and (message.author == client.user)) or ('I\'m Insults Bot' in message.content):
+        await client.add_reaction(message, '😂')
     elif message.content.startswith('<@503096810961764364>, please leave') or message.content.startswith('<@!503096810961764364>, please leave'):
         await client.send_message(message.channel, 'I am sorry to have failed you, I will now leave.')
         await client.leave_server(client.get_server(message.server.id))
