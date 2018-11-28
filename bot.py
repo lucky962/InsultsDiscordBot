@@ -263,6 +263,8 @@ async def on_message(message):
                 await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m... wait... That\'s me!!!')
             else:
                 await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
+    elif ('5 year old' in message.content.lower()) or ('you are 5' in message.content.lower()):
+        await client.send_message(message.channel, 'Do you mean 15 year old?')
     elif ((message.content in insults) and (message.author == client.user)) or ('I\'m Insults Bot' in message.content):
         await client.add_reaction(message, '😂')
     elif message.content.startswith('<@503096810961764364>, please leave') or message.content.startswith('<@!503096810961764364>, please leave'):
