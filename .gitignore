@@ -2,3 +2,4 @@ CMDDependencies/BotToken.txt
 Experiments.py
 .vscode/
 Testing/
+__pycache__/
