@@ -91,6 +91,8 @@ async def on_message(message):
                 await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
         else:
             await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
+    elif message.author == client.user:
+        return
     elif message.content.startswith('Hello <@503096810961764364>') or message.content.startswith('Hello <@!503096810961764364>'):
         await client.send_message(message.channel, 'Hello {0.author.mention}'.format(message))
     elif ('<@503096810961764364>' in message.content.lower() or '<@!503096810961764364>' in message.content.lower()) and 'start' in message.content.lower() and 'dad joke' in message.content.lower():
