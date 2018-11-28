@@ -111,36 +111,36 @@ async def on_message(message):
                 icon_url=client.user.avatar_url
                 )
             HelpMsg.add_field(
-                name="help",
+                name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "help",
                 value="Displays this help page."
             )
             HelpMsg.add_field(
-                name="i!insult <number(optional)>",
+                name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "insult <number(optional)>",
                 value="Displays a randomly selected Insult. If a number is present, show the insult at that position."
             )
             HelpMsg.add_field(
-                name="i!suggestion <suggestion>",
+                name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "suggestion <suggestion>",
                 value="This adds an insult to the list of insults that this bot chooses from."
             )
             HelpMsg.add_field(
-                name="i!updatelog",
+                name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "prefix <prefix>",
+                value=("This changes the prefix for commandsv")
+            )            
+            HelpMsg.add_field(
+                name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "loop",
+                value=("This makes the bot say this command on repeat. Loop is currently ") + ('enabled.' if OtherVars['Loop'] == 'True' else 'disabled until further notice.')
+            )
+            HelpMsg.add_field(
+                name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "updatelog",
                 value="This shows the improvements from the last update and upcoming updates."
             )
             HelpMsg.add_field(
-                name="@Insults, stop the dad jokes",
-                value="This stops insults bot from making any more dad jokes or until reenabled. DadJokes are disabled at default."
-            )
-            HelpMsg.add_field(
-                name="@Insults, start the dad jokes",
-                value="This allows insults bot to make dad jokes. Example of dad joke that this bot makes: Someone: I'm happy. Bot: Hi happy!"
+                name="@Insults, stop/start dad jokes",
+                value="This stops/allows the insult bot from making any more dad jokes. DadJokes are disabled at default."
             )
             HelpMsg.add_field(
                 name="@Insults, please leave",
                 value="This will force the bot to leave the server, please don\'t do this."
-            )
-            HelpMsg.add_field(
-                name="i!loop",
-                value=("This makes the bot say i!loop on repeat. Type i!disloop to disable loop and i!enaloop to enable loop. Loop is currently ") + ('enabled.' if OtherVars['Loop'] == 'True' else 'disabled until further notice.')
             )
             HelpMsg.set_footer(
                 icon_url=client.user.avatar_url,
@@ -157,7 +157,13 @@ async def on_message(message):
             await client.send_message(message.channel, 'Debug comments ' + '{0.author.mention}'.format(message) + ' ' + message.content +  ' ' + message.server.id +  ' ' + str(djenable) + str(CMDPrefix))
         elif messege.startswith('prefix'):
             if len(messege) < 8:
-                await client.send_message(message.channel, 'The current prefix that is set is: ' + CMDPrefix.get(message.server.id))
+                await client.send_message(message.channel, 'Your prefix has been set to the default(i!) from ' + CMDPrefix.get(message.server.id))
+                CMDPrefix.update({message.server.id:'i!'})
+                with open('ServerPrefixes.py','w') as f:
+                    f.write("CMDPrefix = {\n")
+                    for key,val in CMDPrefix.items():
+                        f.write('    \'' + key + '\':\'' + val + '\',\n')
+                    f.write('}\n')
             elif len(messege) > 7:
                 await client.send_message(message.channel, 'You have changed your prefix from ' + CMDPrefix.get(message.server.id) + ' to ' + messege[7:])
                 CMDPrefix.update({message.server.id:messege[7:]})
@@ -167,7 +173,7 @@ async def on_message(message):
                         f.write('    \'' + key + '\':\'' + val + '\',\n')
                     f.write('}\n')
         else:
-            await client.send_message(message.channel, 'Sorry I don\'t know about that command yet, to see all available commands, please type i!help!')
+            await client.send_message(message.channel, 'Sorry I don\'t know about that command yet, to see all available commands, please type ' + (CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + 'help')
     elif message.content.startswith('Hello <@503096810961764364>') or message.content.startswith('Hello <@!503096810961764364>'):
         await client.send_message(message.channel, 'Hello {0.author.mention}'.format(message))
     elif ('<@503096810961764364>' in message.content.lower() or '<@!503096810961764364>' in message.content.lower()) and 'start' in message.content.lower() and 'dad joke' in message.content.lower():
