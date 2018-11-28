@@ -4,6 +4,7 @@ import random
 import json
 import re
 import os
+import time
 from CMDDependencies.ServerPrefixes import *
 
 os.chdir('CMDDependencies')
@@ -15,6 +16,10 @@ with open('BotToken.txt') as f:
 with open('insults.txt') as f:
     insults = f.readlines()
 insults = [x.strip() for x in insults]
+
+with open('hb.txt') as f:
+    hb = f.read()
+    print(hb)
 
 with open('OtherVars.txt', 'r') as document:
     OtherVars = {}
@@ -34,6 +39,7 @@ async def on_message(message):
     global insults
     global OtherVars
     global djenable
+    global hb
     djenabledit = []
     print('{0.author.mention}'.format(message))
     print(message.content)
@@ -45,6 +51,11 @@ async def on_message(message):
     #     await client.send_message(message.channel, '<@256334462697078784> ' + insults[random.randint(0,len(insults))])
     # if (sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2)) and (len(message.content) > 1):
     #     await client.send_message(message.channel, 'No need to shout...')
+    if (('{0.author.mention}'.format(message) == '<@!256334462697078784>') or ('{0.author.mention}'.format(message) == '<@256334462697078784>')) and (hb == '0') and (time.time() > 1543755600):
+        await client.send_message(message.channel, 'Happy Birthday <@256334462697078784>!!!')
+        hb = 1
+        with open('hb.txt','w') as f:
+            f.write('1')
     if message.content.startswith(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!'):
         messege = message.content[len(CMDPrefix.get(message.server.id)):]
         print(message)
@@ -161,6 +172,7 @@ async def on_message(message):
             await client.send_message(message.channel, "You are using Insults Bot v1.0.0")
         elif messege.startswith('test'):
             await client.send_message(message.channel, 'Debug comments ' + '{0.author.mention}'.format(message) + ' ' + message.content +  ' ' + message.server.id +  ' ' + str(djenable) + str(CMDPrefix))
+            await client.send_message(message.channel, "<@244596682531143680>")
         elif messege.startswith('prefix'):
             if len(messege) < 8:
                 await client.send_message(message.channel, 'Your prefix has been set to the default(i!) from ' + CMDPrefix.get(message.server.id))
