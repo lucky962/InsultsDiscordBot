@@ -4,10 +4,10 @@ import random
 import json
 import re
 import os
+from CMDDependencies.ServerPrefixes import *
 
 os.chdir('CMDDependencies')
 djenable = []
-CMDPrefix = 'i!'
 
 with open('BotToken.txt') as f:
     TOKEN = f.read()
@@ -45,8 +45,9 @@ async def on_message(message):
     #     await client.send_message(message.channel, '<@256334462697078784> ' + insults[random.randint(0,len(insults))])
     # if (sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2)) and (len(message.content) > 1):
     #     await client.send_message(message.channel, 'No need to shout...')
-    if message.content.startswith(CMDPrefix):
-        messege = message.content[2:]
+    if message.content.startswith(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!'):
+        messege = message.content[len(CMDPrefix.get(message.server.id)):]
+        print(message)
         if messege.startswith('loop') and OtherVars['Loop'] == 'True':
             await client.send_message(message.channel, 'loop')
             # await client.send_message(message.channel, 'loop has been disabled for now.\nIt will be back soon though! With an added stop function!')
@@ -152,6 +153,19 @@ async def on_message(message):
             # await client.send_message(message.channel, updatelog)
             # doc.close()
             await client.send_message(message.channel, "To view the update log, please visit http://discordbotupdates.luckysweb.net/")
+        elif messege.startswith('test'):
+            await client.send_message(message.channel, 'Debug comments ' + '{0.author.mention}'.format(message) + ' ' + message.content +  ' ' + message.server.id +  ' ' + str(djenable) + str(CMDPrefix))
+        elif messege.startswith('prefix'):
+            if len(messege) < 8:
+                await client.send_message(message.channel, 'The current prefix that is set is: ' + CMDPrefix.get(message.server.id))
+            elif len(messege) > 7:
+                await client.send_message(message.channel, 'You have changed your prefix from ' + CMDPrefix.get(message.server.id) + ' to ' + messege[7:])
+                CMDPrefix.update({message.server.id:messege[7:]})
+                with open('ServerPrefixes.py','w') as f:
+                    f.write("CMDPrefix = {\n")
+                    for key,val in CMDPrefix.items():
+                        f.write('    \'' + key + '\':\'' + val + '\',\n')
+                    f.write('}\n')
         else:
             await client.send_message(message.channel, 'Sorry I don\'t know about that command yet, to see all available commands, please type i!help!')
     elif message.content.startswith('Hello <@503096810961764364>') or message.content.startswith('Hello <@!503096810961764364>'):
