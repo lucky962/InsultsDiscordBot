@@ -115,6 +115,10 @@ async def on_message(message):
                 value="Displays this help page."
             )
             HelpMsg.add_field(
+                name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "version",
+                value="This will show the current version of Insults Bot."
+            )
+            HelpMsg.add_field(
                 name=(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + "insult <number(optional)>",
                 value="Displays a randomly selected Insult. If a number is present, show the insult at that position."
             )
@@ -153,6 +157,8 @@ async def on_message(message):
             # await client.send_message(message.channel, updatelog)
             # doc.close()
             await client.send_message(message.channel, "To view the update log, please visit http://discordbotupdates.luckysweb.net/")
+        elif messege.startswith('version'):
+            await client.send_message(message.channel, "You are using Insults Bot v1.0.0")
         elif messege.startswith('test'):
             await client.send_message(message.channel, 'Debug comments ' + '{0.author.mention}'.format(message) + ' ' + message.content +  ' ' + message.server.id +  ' ' + str(djenable) + str(CMDPrefix))
         elif messege.startswith('prefix'):
