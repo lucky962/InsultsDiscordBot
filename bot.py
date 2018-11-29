@@ -261,6 +261,8 @@ async def on_message(message):
                     f.write('}\n')
         else:
             await client.send_message(message.channel, 'Sorry I don\'t know about that command yet, to see all available commands, please type ' + (CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + 'help')
+    elif ((message.author == client.user)) and ((message.content in insults) or ('I\'m Insults Bot' in message.content)):
+        await client.add_reaction(message, '😂')
     elif message.author == client.user:
         return
     elif message.content.startswith('Hello <@503096810961764364>') or message.content.startswith('Hello <@!503096810961764364>'):
@@ -336,8 +338,6 @@ async def on_message(message):
                 await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
     elif ('5 year old' in message.content.lower()) or ('you are 5' in message.content.lower()):
         await client.send_message(message.channel, 'Do you mean 15 year old?')
-    elif ((message.content in insults) and (message.author == client.user)) or ('I\'m Insults Bot' in message.content):
-        await client.add_reaction(message, '😂')
     elif message.content.startswith('<@503096810961764364>, please leave') or message.content.startswith('<@!503096810961764364>, please leave'):
         await client.send_message(message.channel, 'I am sorry to have failed you, I will now leave.')
         await client.leave_server(client.get_server(message.server.id))
