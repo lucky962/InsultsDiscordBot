@@ -5,11 +5,13 @@ import json
 import re
 import os
 import time
+from PyDictionary import PyDictionary
 from CMDDependencies.ServerPrefixes import *
 from CMDDependencies.lastmessage import *
 
 os.chdir('CMDDependencies')
 djenable = []
+spamdetect = {}
 
 with open('BotToken.txt') as f:
     TOKEN = f.read()
@@ -52,13 +54,20 @@ async def on_message(message):
     #     await client.send_message(message.channel, '<@256334462697078784> ' + insults[random.randint(0,len(insults))])
     # if (sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2)) and (len(message.content) > 1):
     #     await client.send_message(message.channel, 'No need to shout...')
-    if (message.content.startswith('pcatch ')) and (time.time() + 60 > float(lastmessage.get('{0.author.mention}'.format(message)))):
-        await client.send_message(message.channel, 'Hello, it seems you haven\'t said anything since ' + time.time() - float(lastmessage.get('{0.author.mention}'.format(message))) + ' seconds ago, but seem to have tried to catch a pokemon, you have been suspected of lurking.')
-    lastmessage.update = {'{0.author.mention}'.format(message):time.time()}
+    if (time.time() - 2 < float(lastmessage.get('{0.author.mention}'.format(message)))):
+        spamdetect.update({'{0.author.mention}'.format(message):(spamdetect.get('{0.author.mention}'.format(message))) + 1})
+        print (spamdetect.get('{0.author.mention}'.format(message)))
+        if spamdetect.get('{0.author.mention}'.format(message)) > 2:
+            await client.send_message(message.channel, "Hello, it seems that you might be spamming, please don't spam or you may be banned.")
+    else:
+        spamdetect.update({'{0.author.mention}'.format(message):0})
+    if (message.content.startswith('pcatch ')) and (time.time() - 60 > float(lastmessage.get('{0.author.mention}'.format(message)))):
+        await client.send_message(message.channel, 'Hello, it seems you haven\'t said anything since ' + str(time.time() - float(lastmessage.get('{0.author.mention}'.format(message)))) + ' seconds ago, but seem to have tried to catch a pokemon, you have been suspected of lurking.')
+    lastmessage.update({'{0.author.mention}'.format(message):time.time()})
     with open('lastmessage.py','w') as f:
-        f.write("CMDPrefix = {\n")
+        f.write("lastmessage = {\n")
         for key,val in lastmessage.items():
-            f.write('    \'' + key + '\':\'' + val + '\',\n')
+            f.write('    \'' + key + '\':\'' + str(val) + '\',\n')
         f.write('}\n')
     if (('{0.author.mention}'.format(message) == '<@!256334462697078784>') or ('{0.author.mention}'.format(message) == '<@256334462697078784>')) and (hb == '0') and (time.time() > 1543755600):
         await client.send_message(message.channel, 'Happy Birthday <@256334462697078784>!!!')
@@ -112,6 +121,57 @@ async def on_message(message):
                     await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
             else:
                 await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
+        elif messege.lower().startswith('define'):
+            if len(messege) > 7:
+                definition = PyDictionary().meaning(messege[7:])
+                definitionmsg = discord.Embed(
+                    title=messege[7:].capitalize(),
+                    color=3447003
+                )
+                if definition == None:
+                    await client.send_message(message.channel, 'Sorry, word not found.')
+                    return
+                if 'Noun' in definition:
+                    finaldef = ''
+                    for x in definition.get('Noun'):
+                        finaldef = finaldef + str(definition.get('Noun').index(x) + 1) + '. ' + x + '\n'
+                    definitionmsg.add_field(
+                        name='Noun',
+                        value=finaldef
+                    )
+                if 'Verb' in definition:
+                    finaldef = ''
+                    for x in definition.get('Verb'):
+                        finaldef = finaldef + str(definition.get('Verb').index(x) + 1) + '. ' + x + '\n'
+                    definitionmsg.add_field(
+                        name='Verb',
+                        value=finaldef
+                    )
+                if 'Adjective' in definition:
+                    finaldef = ''
+                    for x in definition.get('Adjective'):
+                        finaldef = finaldef + str(definition.get('Adjective').index(x) + 1) + '. ' + x + '\n'
+                    definitionmsg.add_field(
+                        name='Adjective',
+                        value=finaldef
+                    )
+                if 'Adverb' in definition:
+                    finaldef = ''
+                    for x in definition.get('Adverb'):
+                        finaldef = finaldef + str(definition.get('Adverb').index(x) + 1) + '. ' + x + '\n'
+                    definitionmsg.add_field(
+                        name='Adverb',
+                        value=finaldef
+                    )
+                await client.send_message(message.channel, embed=definitionmsg)
+            else:
+                await client.send_message(message.channel, 'Error: No word specified')
+        elif messege.startswith('translate'):
+            if len(messege) > 10:
+                translation = PyDictionary().translate(messege[13:],messege[10:12])
+                await client.send_message(message.channel, translation)
+            else:
+                await client.send_message(message.channel, 'No word specified.')
         elif messege.startswith('suggestion'):
             file = open("insults.txt","a")
             file.write(message[13:] + '\n')
@@ -167,7 +227,7 @@ async def on_message(message):
                 value="This will force the bot to leave the server, please don\'t do this."
             )
             HelpMsg.set_footer(
-                icon_url=client.user.avatar_url,
+                icon_url=message.server.get_member("244596682531143680").avatar_url,
                 text="© 2018 Lucky's Creations"
             )   
             await client.send_message(message.channel, embed=HelpMsg)
