@@ -128,6 +128,9 @@ async def on_message(message):
                     title=messege[7:].capitalize(),
                     color=3447003
                 )
+                if definition == None:
+                    await client.send_message(message.channel, 'Sorry, word not found.')
+                    return
                 if 'Noun' in definition:
                     finaldef = ''
                     for x in definition.get('Noun'):
@@ -163,6 +166,12 @@ async def on_message(message):
                 await client.send_message(message.channel, embed=definitionmsg)
             else:
                 await client.send_message(message.channel, 'Error: No word specified')
+        elif messege.startswith('translate'):
+            if len(messege) > 10:
+                translation = PyDictionary().translate(messege[13:],messege[10:12])
+                await client.send_message(message.channel, translation)
+            else:
+                await client.send_message(message.channel, 'No word specified.')
         elif messege.startswith('suggestion'):
             file = open("insults.txt","a")
             file.write(message[13:] + '\n')
