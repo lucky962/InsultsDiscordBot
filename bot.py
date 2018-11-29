@@ -5,6 +5,7 @@ import json
 import re
 import os
 import time
+from PyDictionary import PyDictionary
 from CMDDependencies.ServerPrefixes import *
 from CMDDependencies.lastmessage import *
 
@@ -120,6 +121,48 @@ async def on_message(message):
                     await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
             else:
                 await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
+        elif messege.lower().startswith('define'):
+            if len(messege) > 7:
+                definition = PyDictionary().meaning(messege[7:])
+                definitionmsg = discord.Embed(
+                    title=messege[7:].capitalize(),
+                    color=3447003
+                )
+                if 'Noun' in definition:
+                    finaldef = ''
+                    for x in definition.get('Noun'):
+                        finaldef = finaldef + str(definition.get('Noun').index(x) + 1) + '. ' + x + '\n'
+                    definitionmsg.add_field(
+                        name='Noun',
+                        value=finaldef
+                    )
+                if 'Verb' in definition:
+                    finaldef = ''
+                    for x in definition.get('Verb'):
+                        finaldef = finaldef + str(definition.get('Verb').index(x) + 1) + '. ' + x + '\n'
+                    definitionmsg.add_field(
+                        name='Verb',
+                        value=finaldef
+                    )
+                if 'Adjective' in definition:
+                    finaldef = ''
+                    for x in definition.get('Adjective'):
+                        finaldef = finaldef + str(definition.get('Adjective').index(x) + 1) + '. ' + x + '\n'
+                    definitionmsg.add_field(
+                        name='Adjective',
+                        value=finaldef
+                    )
+                if 'Adverb' in definition:
+                    finaldef = ''
+                    for x in definition.get('Adverb'):
+                        finaldef = finaldef + str(definition.get('Adverb').index(x) + 1) + '. ' + x + '\n'
+                    definitionmsg.add_field(
+                        name='Adverb',
+                        value=finaldef
+                    )
+                await client.send_message(message.channel, embed=definitionmsg)
+            else:
+                await client.send_message(message.channel, 'Error: No word specified')
         elif messege.startswith('suggestion'):
             file = open("insults.txt","a")
             file.write(message[13:] + '\n')
@@ -175,7 +218,7 @@ async def on_message(message):
                 value="This will force the bot to leave the server, please don\'t do this."
             )
             HelpMsg.set_footer(
-                icon_url=client.user.avatar_url,
+                icon_url=message.server.get_member("244596682531143680").avatar_url,
                 text="© 2018 Lucky's Creations"
             )   
             await client.send_message(message.channel, embed=HelpMsg)
