@@ -6,6 +6,7 @@ import re
 import os
 import time
 from CMDDependencies.ServerPrefixes import *
+from CMDDependencies.lastmessage import *
 
 os.chdir('CMDDependencies')
 djenable = []
@@ -46,6 +47,12 @@ async def on_message(message):
     print(message.server.id)
     print(message.server.id in djenable)
     print(djenable)
+    lastmessage.update = {'{0.author.mention}'.format(message):time.time()}
+    with open('lastmessage.py','w') as f:
+        f.write("CMDPrefix = {\n")
+        for key,val in lastmessage.items():
+            f.write('    \'' + key + '\':\'' + val + '\',\n')
+        f.write('}\n')
     # IDEAS FOR NEW FUNCTIONS
     # if '{0.author.mention}'.format(message) == '<@256334462697078784>':
     #     await client.send_message(message.channel, '<@256334462697078784> ' + insults[random.randint(0,len(insults))])
