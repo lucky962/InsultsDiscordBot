@@ -186,7 +186,7 @@ async def on_message(message):
             # doc.close()
             await client.send_message(message.channel, "To view the update log, please visit http://discordbotupdates.luckysweb.net/")
         elif messege.startswith('version'):
-            await client.send_message(message.channel, "You are using Insults Bot v1.0.0")
+            await client.send_message(message.channel, "You are using Insults Bot Beta v1.1.0")
         elif messege.startswith('test'):
             await client.send_message(message.channel, 'Debug comments ' + '{0.author.mention}'.format(message) + ' ' + message.content +  ' ' + message.server.id +  ' ' + str(djenable) + str(CMDPrefix))
             await client.send_message(message.channel, "<@244596682531143680>")
