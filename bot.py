@@ -6,12 +6,17 @@ import re
 import os
 import time
 from PyDictionary import PyDictionary
+from yandex_translate import YandexTranslate
 from CMDDependencies.ServerPrefixes import *
 from CMDDependencies.lastmessage import *
 
 os.chdir('CMDDependencies')
 djenable = []
 spamdetect = {}
+
+with open('translaterkey.txt') as g:
+    f = g.read()
+    translate = YandexTranslate(f)
 
 with open('BotToken.txt') as f:
     TOKEN = f.read()
@@ -168,8 +173,7 @@ async def on_message(message):
                 await client.send_message(message.channel, 'Error: No word specified')
         elif messege.startswith('translate'):
             if len(messege) > 10:
-                translation = PyDictionary().translate(messege[13:],messege[10:12])
-                await client.send_message(message.channel, translation)
+                await client.send_message(message.channel, 'Translation: ' + translate.translate(messege[13:],messege[10:12]).get('text')[0])
             else:
                 await client.send_message(message.channel, 'No word specified.')
         elif messege.startswith('suggestion'):
