@@ -5,12 +5,18 @@ import json
 import re
 import os
 import time
+from PyDictionary import PyDictionary
+from yandex_translate import YandexTranslate
 from CMDDependencies.ServerPrefixes import *
 from CMDDependencies.lastmessage import *
 
 os.chdir('CMDDependencies')
 djenable = []
 spamdetect = {}
+
+with open('translaterkey.txt') as g:
+    f = g.read()
+    translate = YandexTranslate(f)
 
 with open('BotToken.txt') as f:
     TOKEN = f.read()
@@ -120,6 +126,56 @@ async def on_message(message):
                     await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
             else:
                 await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
+        elif messege.lower().startswith('define'):
+            if len(messege) > 7:
+                definition = PyDictionary().meaning(messege[7:])
+                definitionmsg = discord.Embed(
+                    title=messege[7:].capitalize(),
+                    color=3447003
+                )
+                if definition == None:
+                    await client.send_message(message.channel, 'Sorry, word not found.')
+                    return
+                if 'Noun' in definition:
+                    finaldef = ''
+                    for x in definition.get('Noun'):
+                        finaldef = finaldef + str(definition.get('Noun').index(x) + 1) + '. ' + x + '\n'
+                    definitionmsg.add_field(
+                        name='Noun',
+                        value=finaldef
+                    )
+                if 'Verb' in definition:
+                    finaldef = ''
+                    for x in definition.get('Verb'):
+                        finaldef = finaldef + str(definition.get('Verb').index(x) + 1) + '. ' + x + '\n'
+                    definitionmsg.add_field(
+                        name='Verb',
+                        value=finaldef
+                    )
+                if 'Adjective' in definition:
+                    finaldef = ''
+                    for x in definition.get('Adjective'):
+                        finaldef = finaldef + str(definition.get('Adjective').index(x) + 1) + '. ' + x + '\n'
+                    definitionmsg.add_field(
+                        name='Adjective',
+                        value=finaldef
+                    )
+                if 'Adverb' in definition:
+                    finaldef = ''
+                    for x in definition.get('Adverb'):
+                        finaldef = finaldef + str(definition.get('Adverb').index(x) + 1) + '. ' + x + '\n'
+                    definitionmsg.add_field(
+                        name='Adverb',
+                        value=finaldef
+                    )
+                await client.send_message(message.channel, embed=definitionmsg)
+            else:
+                await client.send_message(message.channel, 'Error: No word specified')
+        elif messege.startswith('translate'):
+            if len(messege) > 10:
+                await client.send_message(message.channel, 'Translation: ' + translate.translate(messege[13:],messege[10:12]).get('text')[0])
+            else:
+                await client.send_message(message.channel, 'No word specified.')
         elif messege.startswith('suggestion'):
             file = open("insults.txt","a")
             file.write(message[13:] + '\n')
@@ -175,7 +231,7 @@ async def on_message(message):
                 value="This will force the bot to leave the server, please don\'t do this."
             )
             HelpMsg.set_footer(
-                icon_url=client.user.avatar_url,
+                icon_url=message.server.get_member("244596682531143680").avatar_url,
                 text="© 2018 Lucky's Creations"
             )   
             await client.send_message(message.channel, embed=HelpMsg)
@@ -209,6 +265,8 @@ async def on_message(message):
                     f.write('}\n')
         else:
             await client.send_message(message.channel, 'Sorry I don\'t know about that command yet, to see all available commands, please type ' + (CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!') + 'help')
+    elif ((message.author == client.user)) and ((message.content in insults) or ('I\'m Insults Bot' in message.content)):
+        await client.add_reaction(message, '😂')
     elif message.author == client.user:
         return
     elif message.content.startswith('Hello <@503096810961764364>') or message.content.startswith('Hello <@!503096810961764364>'):
@@ -284,8 +342,6 @@ async def on_message(message):
                 await client.send_message(message.channel, 'Hello ' + dadname[1] + ', I\'m Insults Bot!')
     elif ('5 year old' in message.content.lower()) or ('you are 5' in message.content.lower()):
         await client.send_message(message.channel, 'Do you mean 15 year old?')
-    elif ((message.content in insults) and (message.author == client.user)) or ('I\'m Insults Bot' in message.content):
-        await client.add_reaction(message, '😂')
     elif message.content.startswith('<@503096810961764364>, please leave') or message.content.startswith('<@!503096810961764364>, please leave'):
         await client.send_message(message.channel, 'I am sorry to have failed you, I will now leave.')
         await client.leave_server(client.get_server(message.server.id))
