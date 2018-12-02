@@ -7,10 +7,16 @@ import os
 import time
 from PyDictionary import PyDictionary
 from yandex_translate import YandexTranslate
+
+os.chdir('CMDDependencies')
+
+if not os.path.isfile('lastmessage.py'):
+    with open('lastmessage.py','w') as f:
+        f.writelines('lastmessage = {\n    \'<@244596682531143680>\':\'' + str(time.time()) + '\',\n}')
+
 from CMDDependencies.ServerPrefixes import *
 from CMDDependencies.lastmessage import *
 
-os.chdir('CMDDependencies')
 djenable = []
 spamdetect = {}
 
