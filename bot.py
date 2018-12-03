@@ -89,6 +89,7 @@ async def on_message(message):
         with open('hb.txt','w') as f:
             f.write('1')
     if message.content.startswith(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!'):
+        await client.send_typing(message.channel)
         messege = message.content[len(CMDPrefix.get(message.server.id)):]
         print(message)
         if messege.startswith('loop') and OtherVars['Loop'] == 'True':
