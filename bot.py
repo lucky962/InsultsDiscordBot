@@ -5,8 +5,18 @@ import json
 import re
 import os
 import time
+import requests
 from PyDictionary import PyDictionary
 from yandex_translate import YandexTranslate
+from nested_lookup import nested_lookup
+from bs4 import BeautifulSoup
+
+os.chdir('CMDDependencies')
+
+if not os.path.isfile('lastmessage.py'):
+    with open('lastmessage.py','w') as f:
+        f.writelines('lastmessage = {\n    \'<@244596682531143680>\':\'' + str(time.time()) + '\',\n}')
+
 from CMDDependencies.ServerPrefixes import *
 from CMDDependencies.lastmessage import *
 
@@ -28,6 +38,11 @@ insults = [x.strip() for x in insults]
 with open('hb.txt') as f:
     hb = f.read()
     print(hb)
+
+with open('dictionarykeys.txt') as f:
+    contents = [x.strip() for x in f]
+    app_id = contents[0]
+    app_key = contents[1]
 
 with open('OtherVars.txt', 'r') as document:
     OtherVars = {}
@@ -128,54 +143,102 @@ async def on_message(message):
                 await client.send_message(message.channel, insults[random.randint(0,(len(insults) - 1))])
         elif messege.lower().startswith('define'):
             if len(messege) > 7:
-                definition = PyDictionary().meaning(messege[7:])
-                definitionmsg = discord.Embed(
-                    title=messege[7:].capitalize(),
-                    color=3447003
-                )
-                if definition == None:
-                    await client.send_message(message.channel, 'Sorry, word not found.')
-                    return
-                if 'Noun' in definition:
-                    finaldef = ''
-                    for x in definition.get('Noun'):
-                        finaldef = finaldef + str(definition.get('Noun').index(x) + 1) + '. ' + x + '\n'
-                    definitionmsg.add_field(
-                        name='Noun',
-                        value=finaldef
-                    )
-                if 'Verb' in definition:
-                    finaldef = ''
-                    for x in definition.get('Verb'):
-                        finaldef = finaldef + str(definition.get('Verb').index(x) + 1) + '. ' + x + '\n'
-                    definitionmsg.add_field(
-                        name='Verb',
-                        value=finaldef
-                    )
-                if 'Adjective' in definition:
-                    finaldef = ''
-                    for x in definition.get('Adjective'):
-                        finaldef = finaldef + str(definition.get('Adjective').index(x) + 1) + '. ' + x + '\n'
-                    definitionmsg.add_field(
-                        name='Adjective',
-                        value=finaldef
-                    )
-                if 'Adverb' in definition:
-                    finaldef = ''
-                    for x in definition.get('Adverb'):
-                        finaldef = finaldef + str(definition.get('Adverb').index(x) + 1) + '. ' + x + '\n'
-                    definitionmsg.add_field(
-                        name='Adverb',
-                        value=finaldef
-                    )
-                await client.send_message(message.channel, embed=definitionmsg)
+                r = requests.get('https://od-api.oxforddictionaries.com:443/api/v1/entries/' + 'en' + '/' + messege[7:].lower(), headers = {'app_id': app_id, 'app_key': app_key})
+                data = json.loads(r.text)
+                definitions = nested_lookup('definitions', data)
+                # definitions = "\n".join(definitions)
+                await client.send_message(message.channel, "Definitions: \n" + str(definitions))
+                # definition = PyDictionary().meaning(messege[7:])
+                # definitionmsg = discord.Embed(
+                #     title=messege[7:].capitalize(),
+                #     color=3447003
+                # )
+                # if definition == None:
+                #     await client.send_message(message.channel, 'Sorry, word not found.')
+                #     return
+                # if 'Noun' in definition:
+                #     finaldef = ''
+                #     for x in definition.get('Noun'):
+                #         finaldef = finaldef + str(definition.get('Noun').index(x) + 1) + '. ' + x + '\n'
+                #     definitionmsg.add_field(
+                #         name='Noun',
+                #         value=finaldef
+                #     )
+                # if 'Verb' in definition:
+                #     finaldef = ''
+                #     for x in definition.get('Verb'):
+                #         finaldef = finaldef + str(definition.get('Verb').index(x) + 1) + '. ' + x + '\n'
+                #     definitionmsg.add_field(
+                #         name='Verb',
+                #         value=finaldef
+                #     )
+                # if 'Adjective' in definition:
+                #     finaldef = ''
+                #     for x in definition.get('Adjective'):
+                #         finaldef = finaldef + str(definition.get('Adjective').index(x) + 1) + '. ' + x + '\n'
+                #     definitionmsg.add_field(
+                #         name='Adjective',
+                #         value=finaldef
+                #     )
+                # if 'Adverb' in definition:
+                #     finaldef = ''
+                #     for x in definition.get('Adverb'):
+                #         finaldef = finaldef + str(definition.get('Adverb').index(x) + 1) + '. ' + x + '\n'
+                #     definitionmsg.add_field(
+                #         name='Adverb',
+                #         value=finaldef
+                #     )
+                # await client.send_message(message.channel, embed=definitionmsg)
             else:
                 await client.send_message(message.channel, 'Error: No word specified')
+        elif messege.startswith('synonyms'):
+            r = requests.get('https://od-api.oxforddictionaries.com:443/api/v1/entries/' + 'en' + '/' + messege[9:].lower() + '/synonyms', headers = {'app_id': app_id, 'app_key': app_key})
+            data = json.loads(r.text)
+            synonymes = nested_lookup('text', data)
+            print(len(str(synonymes)))
+            await client.send_message(message.channel, "synonyms \n" + str(synonymes))
         elif messege.startswith('translate'):
             if len(messege) > 10:
                 await client.send_message(message.channel, 'Translation: ' + translate.translate(messege[13:],messege[10:12]).get('text')[0])
             else:
                 await client.send_message(message.channel, 'No word specified.')
+        elif messege.startswith('patch'):
+            page = requests.get('https://playoverwatch.com/en-us/news/patch-notes/pc').text
+            pagelist = page.split('\n')
+            soup = BeautifulSoup(page, 'html.parser')
+            price_box = soup.find('span', attrs={'class':'IconHeading-text'})
+            price = price_box.text
+            for i, elem in enumerate(pagelist):
+                if price in elem:
+                    index = i
+                    break
+            for i, elem in enumerate(pagelist):
+                if 'Learn more about' in elem:
+                    indices = i
+                    break
+            pagelist = pagelist[index + 1:indices + 1]
+            pageliste = '\n'.join(pagelist)
+            pageliste = BeautifulSoup(pageliste, 'html.parser')
+            price_box = soup.find('span', attrs={'class':'IconHeading-text'})
+            price_boxe = soup.find('a', attrs={'class':'u-float-left'})
+            price = pageliste.text
+            PatchNotes = discord.Embed(
+                title=price_boxe.get('href'),
+                url='https://playoverwatch.com/en-us/news/patch-notes/pc' + price_boxe.get('href'),
+                color=0xFFFFFF,
+            )
+            PatchNotes.set_thumbnail(
+                url='http://www.stickpng.com/assets/images/586273b931349e0568ad89df.png'
+            )
+            PatchNotes.add_field(
+                name=price_box.text,
+                value=price
+            )
+            PatchNotes.set_footer(
+                icon_url=message.server.get_member("244596682531143680").avatar_url,
+                text="© 2018 Lucky's Creations"
+            )   
+            await client.send_message(message.channel, embed=PatchNotes)
         elif messege.startswith('suggestion'):
             file = open("insults.txt","a")
             file.write(message[13:] + '\n')
@@ -191,7 +254,7 @@ async def on_message(message):
                 color=3447003
             )
             HelpMsg.set_author(
-                name='Insults Bot', 
+                name='Insults Bot',
                 icon_url=client.user.avatar_url
                 )
             HelpMsg.add_field(
