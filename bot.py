@@ -20,7 +20,6 @@ if not os.path.isfile('lastmessage.py'):
 from CMDDependencies.ServerPrefixes import *
 from CMDDependencies.lastmessage import *
 
-os.chdir('CMDDependencies')
 djenable = []
 spamdetect = {}
 
@@ -74,13 +73,16 @@ async def on_message(message):
     #     await client.send_message(message.channel, '<@256334462697078784> ' + insults[random.randint(0,len(insults))])
     # if (sum(1 for c in message.content if c.isupper()) > (len(message.content) / 2)) and (len(message.content) > 1):
     #     await client.send_message(message.channel, 'No need to shout...')
-    if (time.time() - 2 < float(lastmessage.get('{0.author.mention}'.format(message)))):
-        spamdetect.update({'{0.author.mention}'.format(message):(spamdetect.get('{0.author.mention}'.format(message))) + 1})
-        print (spamdetect.get('{0.author.mention}'.format(message)))
-        if spamdetect.get('{0.author.mention}'.format(message)) > 2:
-            await client.send_message(message.channel, "Hello, it seems that you might be spamming, please don't spam or you may be banned.")
-    else:
-        spamdetect.update({'{0.author.mention}'.format(message):0})
+    try:
+        if (time.time() - 2 < float(lastmessage.get('{0.author.mention}'.format(message)))):
+            spamdetect.update({'{0.author.mention}'.format(message):(spamdetect.get('{0.author.mention}'.format(message))) + 1})
+            print (spamdetect.get('{0.author.mention}'.format(message)))
+            if spamdetect.get('{0.author.mention}'.format(message)) > 2:
+                await client.send_message(message.channel, "Hello, it seems that you might be spamming, please don't spam or you may be banned.")
+        else:
+            spamdetect.update({'{0.author.mention}'.format(message):0})
+    except:
+        lastmessage.update({'{0.author.mention}'.format(message):time.time()})
     if (message.content.startswith('pcatch ')) and (time.time() - 60 > float(lastmessage.get('{0.author.mention}'.format(message)))):
         await client.send_message(message.channel, 'Hello, it seems you haven\'t said anything since ' + str(time.time() - float(lastmessage.get('{0.author.mention}'.format(message)))) + ' seconds ago, but seem to have tried to catch a pokemon, you have been suspected of lurking.')
     lastmessage.update({'{0.author.mention}'.format(message):time.time()})
@@ -305,7 +307,7 @@ async def on_message(message):
             # doc.close()
             await client.send_message(message.channel, "To view the update log, please visit http://discordbotupdates.luckysweb.net/")
         elif messege.startswith('version'):
-            await client.send_message(message.channel, "You are using Insults Bot v1.0.0")
+            await client.send_message(message.channel, "You are using Insults Bot Beta v1.1.0")
         elif messege.startswith('test'):
             await client.send_message(message.channel, 'Debug comments ' + '{0.author.mention}'.format(message) + ' ' + message.content +  ' ' + message.server.id +  ' ' + str(djenable) + str(CMDPrefix))
             await client.send_message(message.channel, "<@244596682531143680>")
