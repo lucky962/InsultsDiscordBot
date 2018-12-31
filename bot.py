@@ -409,6 +409,8 @@ async def on_message(message):
         await client.send_message(message.channel, 'Do you mean 15 year old?')
     elif ('merry christmas' in message.content.lower()) or ('merry xmas' in message.content.lower()):
         await client.send_message(message.channel, 'Merry christmas!')
+    elif ('happy new year' in message.content.lower()):
+        await client.send_message(message.channel, 'Happy New Year!!!')
     elif message.content.startswith('<@503096810961764364>, please leave') or message.content.startswith('<@!503096810961764364>, please leave'):
         await client.send_message(message.channel, 'I am sorry to have failed you, I will now leave.')
         await client.leave_server(client.get_server(message.server.id))
