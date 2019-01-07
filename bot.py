@@ -34,10 +34,6 @@ with open('insults.txt') as f:
     insults = f.readlines()
 insults = [x.strip() for x in insults]
 
-with open('hb.txt') as f:
-    hb = f.read()
-    print(hb)
-
 with open('dictionarykeys.txt') as f:
     contents = [x.strip() for x in f]
     app_id = contents[0]
@@ -61,7 +57,6 @@ async def on_message(message):
     global insults
     global OtherVars
     global djenable
-    global hb
     djenabledit = []
     print('{0.author.mention}'.format(message))
     print(message.content)
@@ -91,11 +86,6 @@ async def on_message(message):
         for key,val in lastmessage.items():
             f.write('    \'' + key + '\':\'' + str(val) + '\',\n')
         f.write('}\n')
-    if (('{0.author.mention}'.format(message) == '<@!256334462697078784>') or ('{0.author.mention}'.format(message) == '<@256334462697078784>')) and (hb == '0') and (time.time() > 1543755600):
-        await client.send_message(message.channel, 'Happy Birthday <@256334462697078784>!!!')
-        hb = 1
-        with open('hb.txt','w') as f:
-            f.write('1')
     if message.content.startswith(CMDPrefix.get(message.server.id) if message.server.id in CMDPrefix else 'i!'):
         messege = message.content[len(CMDPrefix.get(message.server.id)):]
         print(message)
